@@ -2,13 +2,14 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import ReflectionCard from './components/ReflectionCard';
+import RamadanTracker from './components/RamadanTracker';
 import { Reflection } from './types';
 
 const REFLECTIONS: Reflection[] = [
   {
     id: '1',
     day: 1,
-    ayah: "O you who have believed, decreed upon you is fasting as it was decreed upon those before you that you may become righteous.",
+    ayah: "O you who have believed, decreed upon you is fasting as it was decreed upon those before you that you may become righteousness.",
     reflectionText: "Ramadan is not merely a test of physical endurance, but a deliberate spiritual redirection. By stepping away from the habitual intake of nourishment, we create a vacuum that can only be filled with spiritual light. It is a month where we recalibrate our internal compass toward God, remembering that our true sustenance is found in His presence. \n\nAs we begin this journey, let us focus not on what we are losing (food/drink), but on the immense spiritual clarity we are gaining. Each moment of hunger is a reminder of our dependence on the Divine and a call to empathize with those whose hunger is not a choice.",
     journalQuestion: "What is one specific spiritual 'habit' you want to intentionally cultivate during these first ten days of Mercy?",
     dua: "Allahumma laka sumtu wa bika amantu wa 'ala rizqika aftartu (O Allah! I fasted for You and I believe in You and I break my fast with Your sustenance)."
@@ -84,10 +85,10 @@ const App: React.FC = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-              <button className="group relative w-full sm:w-auto px-10 py-4 bg-[#D4AF37] text-[#0a192f] font-bold tracking-wider rounded-sm overflow-hidden transition-all duration-300 shadow-[0_10px_40px_-10px_rgba(212,175,55,0.5)]">
-                <span className="relative z-10">START JOURNEY</span>
+              <a href="#tracker" className="group relative w-full sm:w-auto px-10 py-4 bg-[#D4AF37] text-[#0a192f] font-bold tracking-wider rounded-sm overflow-hidden transition-all duration-300 shadow-[0_10px_40px_-10px_rgba(212,175,55,0.5)] text-center">
+                <span className="relative z-10 uppercase">START JOURNEY</span>
                 <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-              </button>
+              </a>
               <button className="w-full sm:w-auto px-10 py-4 border border-[#D4AF37]/30 text-white font-bold tracking-wider rounded-sm hover:bg-[#D4AF37]/10 hover:border-[#D4AF37] transition-all duration-300 flex items-center justify-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -146,8 +147,21 @@ const App: React.FC = () => {
         <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0a0e17] to-transparent"></div>
       </section>
 
+      {/* Tracker Section */}
+      <section id="tracker" className="py-24 bg-slate-50 relative overflow-hidden">
+        {/* Subtle pattern background for the light section */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0l10 10-10 10-10-10z' fill='%230a192f' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")` }}></div>
+        <div className="relative z-10">
+          <div className="text-center mb-4 px-6">
+             <h2 className="font-serif text-4xl md:text-5xl text-[#0a192f] mb-4">Ramadan Tracker</h2>
+             <p className="text-slate-600 max-w-2xl mx-auto">Build consistency in your worship. Tick off your daily acts and watch your light grow.</p>
+          </div>
+          <RamadanTracker />
+        </div>
+      </section>
+
       {/* Reflections Section */}
-      <section id="calendar" className="py-24 bg-[#f8fafc]">
+      <section id="calendar" className="py-24 bg-white">
         <div className="container mx-auto px-6 md:px-12">
           <div className="text-center mb-16">
             <h2 className="font-serif text-4xl md:text-5xl text-[#0a192f] mb-4">Daily Reflections</h2>

@@ -16,3 +16,17 @@ export interface Reflection {
   journalQuestion: string;
   dua: string;
 }
+
+export interface HabitStatus {
+  fasting: boolean;
+  prayers: boolean;
+  taraweeh: boolean;
+  quran: boolean;
+  dhikr: boolean;
+  charity: boolean;
+}
+
+export interface DayData {
+  day: number;
+  habits: HabitStatus;
+}
