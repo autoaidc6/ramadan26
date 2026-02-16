@@ -3,6 +3,8 @@ import React from 'react';
 import Navbar from './components/Navbar';
 import ReflectionCard from './components/ReflectionCard';
 import RamadanTracker from './components/RamadanTracker';
+import QuranTracker from './components/QuranTracker';
+import PrintablesGallery from './components/PrintablesGallery';
 import { Reflection } from './types';
 
 const REFLECTIONS: Reflection[] = [
@@ -149,7 +151,6 @@ const App: React.FC = () => {
 
       {/* Tracker Section */}
       <section id="tracker" className="py-24 bg-slate-50 relative overflow-hidden">
-        {/* Subtle pattern background for the light section */}
         <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0l10 10-10 10-10-10z' fill='%230a192f' fill-opacity='1' fill-rule='evenodd'/%3E%3C/svg%3E")` }}></div>
         <div className="relative z-10">
           <div className="text-center mb-4 px-6">
@@ -160,8 +161,31 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* Quran Section */}
+      <section id="quran" className="py-24 bg-[#0a192f] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l15 15-15 15-15-15z' fill='%23D4AF37'/%3E%3C/svg%3E")` }}></div>
+        <div className="relative z-10">
+          <div className="text-center mb-4 px-6">
+             <h2 className="font-serif text-4xl md:text-5xl text-[#D4AF37] mb-4">Quran Tracker</h2>
+             <p className="text-slate-300 max-w-2xl mx-auto">Mark your progress through each Juz and save your reflections along the way.</p>
+          </div>
+          <QuranTracker />
+        </div>
+      </section>
+
+      {/* Printables Section */}
+      <section id="printables" className="py-24 bg-white relative overflow-hidden">
+        <div className="relative z-10">
+          <div className="text-center mb-4 px-6">
+             <h2 className="font-serif text-4xl md:text-5xl text-[#0a192f] mb-4">Ramadan Printables</h2>
+             <p className="text-slate-600 max-w-2xl mx-auto">Enhance your month with our beautiful collection of planners, activities, and trackers.</p>
+          </div>
+          <PrintablesGallery />
+        </div>
+      </section>
+
       {/* Reflections Section */}
-      <section id="calendar" className="py-24 bg-white">
+      <section id="calendar" className="py-24 bg-slate-50">
         <div className="container mx-auto px-6 md:px-12">
           <div className="text-center mb-16">
             <h2 className="font-serif text-4xl md:text-5xl text-[#0a192f] mb-4">Daily Reflections</h2>

@@ -30,3 +30,20 @@ export interface DayData {
   day: number;
   habits: HabitStatus;
 }
+
+export interface JuzData {
+  number: number;
+  completed: boolean;
+  notes: string;
+}
+
+export type PrintableCategory = 'All' | 'Kids' | 'Planners' | 'Trackers' | 'Family';
+
+export interface Printable {
+  id: string;
+  title: string;
+  description: string;
+  category: PrintableCategory;
+  isPremium: boolean;
+  thumbnailUrl: string;
+}
