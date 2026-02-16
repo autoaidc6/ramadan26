@@ -1,6 +1,35 @@
 
 import React from 'react';
 import Navbar from './components/Navbar';
+import ReflectionCard from './components/ReflectionCard';
+import { Reflection } from './types';
+
+const REFLECTIONS: Reflection[] = [
+  {
+    id: '1',
+    day: 1,
+    ayah: "O you who have believed, decreed upon you is fasting as it was decreed upon those before you that you may become righteous.",
+    reflectionText: "Ramadan is not merely a test of physical endurance, but a deliberate spiritual redirection. By stepping away from the habitual intake of nourishment, we create a vacuum that can only be filled with spiritual light. It is a month where we recalibrate our internal compass toward God, remembering that our true sustenance is found in His presence. \n\nAs we begin this journey, let us focus not on what we are losing (food/drink), but on the immense spiritual clarity we are gaining. Each moment of hunger is a reminder of our dependence on the Divine and a call to empathize with those whose hunger is not a choice.",
+    journalQuestion: "What is one specific spiritual 'habit' you want to intentionally cultivate during these first ten days of Mercy?",
+    dua: "Allahumma laka sumtu wa bika amantu wa 'ala rizqika aftartu (O Allah! I fasted for You and I believe in You and I break my fast with Your sustenance)."
+  },
+  {
+    id: '2',
+    day: 2,
+    ayah: "The month of Ramadhan [is that] in which was revealed the Qur'an, a guidance for the people and clear proofs of guidance and criterion.",
+    reflectionText: "The heartbeat of Ramadan is the Quran. It was in this month that the heavens spoke to the earth, delivering a message of timeless wisdom. When we fast, our hearts become more receptive to these divine words. \n\nReflect on the power of revelation—how a single verse has the capacity to transform a life, mend a broken spirit, or provide the 'criterion' (Furqan) to distinguish between truth and falsehood. This month is an invitation to re-engage with the Book of Allah, not just in recitation, but in deep, transformative contemplation.",
+    journalQuestion: "Which verse from the Quran has resonated most with your current life situation lately? Why?",
+    dua: "Allahumma ij'alil-Qur'ana rabi'a qulubina (O Allah, make the Quran the spring of our hearts)."
+  },
+  {
+    id: '3',
+    day: 3,
+    ayah: "And when My servants ask you, [O Muhammad], concerning Me - indeed I am near.",
+    reflectionText: "The promise of Divine Proximity is perhaps the most comforting aspect of Ramadan. In a month where we feel physically distant from the world's distractions, we find ourselves remarkably close to our Creator. \n\nThis 'nearness' is an open invitation for Dua. It suggests an intimacy that transcends our flaws and shortcomings. Allah is not a distant observer; He is closer to us than our jugular vein, listening to the silent whispers of our hearts even when our tongues find no words. Use this day to communicate with Him directly, with raw honesty and full certainty of being heard.",
+    journalQuestion: "If you could whisper one secret hope or fear to the Divine today, knowing you are heard with infinite mercy, what would it be?",
+    dua: "Ya Hayyu Ya Qayyum, bi rahmatika astagheeth (O Ever Living One, O Self-Sustaining One, in Your mercy I seek relief)."
+  }
+];
 
 const App: React.FC = () => {
   return (
@@ -104,7 +133,7 @@ const App: React.FC = () => {
               </svg>
 
               {/* Decorative Floating Crescents */}
-              <div className="absolute -top-10 -right-10 animate-bounce" style={{ animationDuration: '4s' }}>
+              <div className="absolute -top-10 -right-10 animate-float" style={{ animationDuration: '4s' }}>
                  <svg width="40" height="40" viewBox="0 0 24 24" fill="#D4AF37" opacity="0.6">
                     <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
                  </svg>
@@ -115,6 +144,31 @@ const App: React.FC = () => {
 
         {/* Bottom Fade */}
         <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0a0e17] to-transparent"></div>
+      </section>
+
+      {/* Reflections Section */}
+      <section id="calendar" className="py-24 bg-[#f8fafc]">
+        <div className="container mx-auto px-6 md:px-12">
+          <div className="text-center mb-16">
+            <h2 className="font-serif text-4xl md:text-5xl text-[#0a192f] mb-4">Daily Reflections</h2>
+            <div className="w-24 h-1 bg-[#D4AF37] mx-auto mb-6"></div>
+            <p className="text-slate-600 max-w-2xl mx-auto">
+              A curated spiritual journey through the 30 days of Ramadan. Deepen your understanding and track your personal growth.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            {REFLECTIONS.map((reflection) => (
+              <ReflectionCard key={reflection.id} reflection={reflection} />
+            ))}
+          </div>
+          
+          <div className="mt-16 text-center">
+            <button className="px-8 py-3 border-2 border-[#D4AF37] text-[#D4AF37] font-bold tracking-widest uppercase hover:bg-[#D4AF37] hover:text-white transition-all duration-300 rounded-sm">
+              View All 30 Days
+            </button>
+          </div>
+        </div>
       </section>
 
       {/* Traditions Section */}
