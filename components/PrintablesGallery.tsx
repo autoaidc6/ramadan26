@@ -14,6 +14,11 @@ const PrintablesGallery: React.FC = () => {
   const { role } = useAuth();
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     fetchPrintables();
     
     // Subscribe to changes
@@ -30,6 +35,7 @@ const PrintablesGallery: React.FC = () => {
   }, []);
 
   async function fetchPrintables() {
+    if (!supabase) return;
     try {
       const { data, error } = await supabase
         .from('printables')
@@ -38,7 +44,6 @@ const PrintablesGallery: React.FC = () => {
 
       if (error) throw error;
       
-      // Map DB field names to Frontend field names if different
       const mappedData = data.map((item: any) => ({
         id: item.id,
         title: item.title,
@@ -58,7 +63,7 @@ const PrintablesGallery: React.FC = () => {
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this resource?")) return;
+    if (!supabase || !confirm("Are you sure you want to delete this resource?")) return;
     try {
       const { error } = await supabase.from('printables').delete().eq('id', id);
       if (error) throw error;
@@ -116,7 +121,9 @@ const PrintablesGallery: React.FC = () => {
 
       {!loading && filteredItems.length === 0 && (
         <div className="text-center py-20 bg-slate-50/50 rounded-3xl border border-dashed border-slate-200">
-          <p className="text-slate-400 font-light italic">The gallery is currently being curated. Check back for new inspirations.</p>
+          <p className="text-slate-400 font-light italic">
+            {!supabase ? "Syncing with cloud sanctuary..." : "The gallery is currently being curated. Check back for new inspirations."}
+          </p>
         </div>
       )}
     </div>

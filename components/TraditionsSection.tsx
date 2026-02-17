@@ -10,6 +10,11 @@ const TraditionsSection: React.FC = () => {
   const { role } = useAuth();
 
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     fetchTraditions();
     
     const channel = supabase
@@ -23,6 +28,7 @@ const TraditionsSection: React.FC = () => {
   }, []);
 
   async function fetchTraditions() {
+    if (!supabase) return;
     try {
       const { data, error } = await supabase
         .from('traditions')
@@ -39,7 +45,7 @@ const TraditionsSection: React.FC = () => {
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Remove this tradition from the sanctuary?")) return;
+    if (!supabase || !confirm("Remove this tradition from the sanctuary?")) return;
     await supabase.from('traditions').delete().eq('id', id);
   };
 
@@ -74,7 +80,9 @@ const TraditionsSection: React.FC = () => {
         ))
       ) : (
         <div className="md:col-span-3 py-12 text-center">
-          <p className="text-slate-500 italic font-light">Seeking sacred moments...</p>
+          <p className="text-slate-500 italic font-light">
+            {!supabase ? "Awaiting connection to ancient roots..." : "Seeking sacred moments..."}
+          </p>
         </div>
       )}
     </div>

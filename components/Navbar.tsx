@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const { user, profile, role, signOut } = useAuth();
+  const { user, profile, role, signOut, isAuthEnabled } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -62,13 +62,17 @@ const Navbar: React.FC = () => {
                   Sign Out
                 </button>
               </div>
-            ) : (
+            ) : isAuthEnabled ? (
               <button 
                 onClick={() => setIsAuthModalOpen(true)}
                 className="px-8 py-3 bg-[#D4AF37] text-[#050a14] text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-white transition-all duration-500 rounded-full shadow-luxury"
               >
                 Sign In
               </button>
+            ) : (
+              <div className="text-[8px] text-slate-500 uppercase tracking-widest border border-white/5 px-4 py-2 rounded-full">
+                Offline Mode
+              </div>
             )}
           </div>
 

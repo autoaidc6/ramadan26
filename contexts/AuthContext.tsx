@@ -9,6 +9,7 @@ interface AuthContextType {
   role: UserRole;
   loading: boolean;
   signOut: () => Promise<void>;
+  isAuthEnabled: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,7 +19,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const isAuthEnabled = !!supabase;
+
   useEffect(() => {
+    if (!supabase) {
+      setLoading(false);
+      return;
+    }
+
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
@@ -41,6 +49,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   async function fetchProfile(userId: string) {
+    if (!supabase) return;
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -58,7 +67,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    if (supabase) {
+      await supabase.auth.signOut();
+    }
   };
 
   const value = {
@@ -66,7 +77,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     profile,
     role: profile?.role || 'user',
     loading,
-    signOut
+    signOut,
+    isAuthEnabled
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
