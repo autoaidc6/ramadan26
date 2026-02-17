@@ -1,23 +1,59 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Premium Ramadan Experience</title>
+  <title>Ramadan Kareem | Premium Spiritual Experience</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --gold: #D4AF37;
+      --gold-light: #F1D279;
+      --navy-deep: #050a14;
+    }
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #0a0e17;
+      background-color: var(--navy-deep);
       color: #f8fafc;
       margin: 0;
+      -webkit-font-smoothing: antialiased;
     }
     .font-serif {
       font-family: 'Playfair Display', serif;
+    }
+    .text-gold { color: var(--gold); }
+    .bg-gold { background-color: var(--gold); }
+    
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--navy-deep); }
+    ::-webkit-scrollbar-thumb { 
+      background: #1e293b; 
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+    /* Luxury Shadows */
+    .shadow-luxury {
+      box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5), 0 0 15px -3px rgba(212, 175, 55, 0.1);
+    }
+    .shadow-gold-glow {
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+    }
+
+    /* Animation Utilities */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
   <script type="importmap">
