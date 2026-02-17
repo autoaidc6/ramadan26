@@ -3,10 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { NAV_ITEMS } from '../constants';
 import Logo from './Logo';
 import MobileMenu from './MobileMenu';
+import { useAuth } from '../contexts/AuthContext';
+import AuthModal from './AuthModal';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const { user, profile, role, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -26,7 +30,7 @@ const Navbar: React.FC = () => {
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
           <Logo />
 
-          <nav className="hidden lg:flex items-center gap-12">
+          <nav className="hidden lg:flex items-center gap-10">
             {NAV_ITEMS.map((item) => (
               <a
                 key={item.label}
@@ -37,15 +41,35 @@ const Navbar: React.FC = () => {
                 <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[#D4AF37] transition-all duration-500 group-hover:w-full opacity-0 group-hover:opacity-100" />
               </a>
             ))}
+            {role === 'admin' && (
+              <a href="#admin" className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#D4AF37] hover:text-white transition-all">
+                Admin
+              </a>
+            )}
           </nav>
 
           <div className="hidden lg:flex items-center gap-8">
-            <button className="text-[10px] font-bold tracking-[0.2em] uppercase text-white hover:text-[#D4AF37] transition-colors">
-              Community
-            </button>
-            <button className="px-8 py-3 bg-white/5 border border-white/10 text-[#D4AF37] text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-[#D4AF37] hover:text-[#050a14] hover:border-[#D4AF37] transition-all duration-500 rounded-full">
-              Contribute
-            </button>
+            {user ? (
+              <div className="flex items-center gap-4">
+                <div className="text-right">
+                  <p className="text-[9px] text-white font-bold uppercase tracking-widest">{profile?.username || user.email.split('@')[0]}</p>
+                  <p className="text-[7px] text-[#D4AF37] uppercase tracking-widest">{role}</p>
+                </div>
+                <button 
+                  onClick={() => signOut()}
+                  className="px-6 py-2 border border-white/10 text-white text-[9px] font-bold tracking-[0.2em] uppercase hover:bg-white/5 transition-all rounded-full"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <button 
+                onClick={() => setIsAuthModalOpen(true)}
+                className="px-8 py-3 bg-[#D4AF37] text-[#050a14] text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-white transition-all duration-500 rounded-full shadow-luxury"
+              >
+                Sign In
+              </button>
+            )}
           </div>
 
           <button
@@ -63,6 +87,11 @@ const Navbar: React.FC = () => {
         isOpen={isMobileMenuOpen} 
         items={NAV_ITEMS} 
         onClose={() => setIsMobileMenuOpen(false)} 
+      />
+      
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
       />
     </>
   );

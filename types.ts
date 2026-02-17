@@ -46,4 +46,23 @@ export interface Printable {
   category: PrintableCategory;
   isPremium: boolean;
   thumbnailUrl: string;
+  fileUrl?: string;
+  created_at?: string;
+}
+
+export interface Tradition {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  created_at?: string;
+}
+
+export type UserRole = 'admin' | 'user';
+
+export interface Profile {
+  id: string;
+  username: string;
+  role: UserRole;
+  avatar_url?: string;
 }
