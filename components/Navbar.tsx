@@ -70,7 +70,10 @@ const Navbar: React.FC = () => {
                 Sign In
               </button>
             ) : (
-              <div className="text-[8px] text-slate-500 uppercase tracking-widest border border-white/5 px-4 py-2 rounded-full">
+              <div 
+                title="Supabase keys not found. Running in Local-Only mode."
+                className="text-[8px] text-[#D4AF37]/60 cursor-help uppercase tracking-widest border border-[#D4AF37]/20 px-4 py-2 rounded-full backdrop-blur-sm"
+              >
                 Offline Mode
               </div>
             )}

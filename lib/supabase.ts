@@ -1,14 +1,38 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.7';
 
-// Support both VITE_ and standard env naming conventions
-const supabaseUrl = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || '';
-const supabaseAnonKey = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || '';
+/**
+ * Safely attempts to retrieve environment variables from common locations.
+ */
+const getEnv = (name: string): string => {
+  try {
+    // Check process.env (Node/Standard)
+    if (typeof process !== 'undefined' && process.env && process.env[name]) {
+      return process.env[name] as string;
+    }
+    // Check import.meta.env (Vite/Modern ESM)
+    // @ts-ignore
+    if (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env[name]) {
+      // @ts-ignore
+      return import.meta.env[name] as string;
+    }
+  } catch (e) {
+    // Environment access restricted
+  }
+  return '';
+};
 
-const isConfigured = supabaseUrl && supabaseUrl.startsWith('http') && supabaseAnonKey;
+const supabaseUrl = getEnv('VITE_SUPABASE_URL') || getEnv('SUPABASE_URL');
+const supabaseAnonKey = getEnv('VITE_SUPABASE_ANON_KEY') || getEnv('SUPABASE_ANON_KEY');
+
+const isConfigured = !!(supabaseUrl && supabaseUrl.startsWith('http') && supabaseAnonKey);
 
 if (!isConfigured) {
-  console.warn("Supabase environment variables are missing. NoorNest will run in local-only mode.");
+  console.info(
+    "%c NoorNest Setup %c Supabase keys not detected. To enable the cloud sanctuary, add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your environment variables.",
+    "background: #D4AF37; color: #050a14; font-weight: bold; padding: 2px 4px; border-radius: 4px;",
+    "color: #D4AF37; font-style: italic;"
+  );
 }
 
 export const supabase = isConfigured ? createClient(supabaseUrl, supabaseAnonKey) : null;
