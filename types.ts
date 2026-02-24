@@ -12,6 +12,7 @@ export interface Reflection {
   id: string;
   day: number;
   ayah: string;
+  arabicAyah?: string;
   reflectionText: string;
   journalQuestion: string;
   dua: string;

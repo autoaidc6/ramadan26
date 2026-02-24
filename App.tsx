@@ -15,18 +15,272 @@ const REFLECTIONS: Reflection[] = [
   {
     id: '1',
     day: 1,
-    ayah: "O you who have believed, decreed upon you is fasting as it was decreed upon those before you that you may become righteousness.",
-    reflectionText: "Ramadan is not merely a test of physical endurance, but a deliberate spiritual redirection. By stepping away from the habitual intake of nourishment, we create a vacuum that can only be filled with spiritual light.",
-    journalQuestion: "What is one specific spiritual 'habit' you want to intentionally cultivate during these first ten days of Mercy?",
+    arabicAyah: "يَا أَيُّهَا الَّذِينَ آمَنُوا كُتِبَ عَلَيْكُمُ الصِّيَامُ كَمَا كُتِبَ عَلَى الَّذِينَ مِن قَبْلِكُمْ لَعَلَّكُمْ تَتَّقُونَ",
+    ayah: "O you who have believed, decreed upon you is fasting as it was decreed upon those before you that you may become righteous.",
+    reflectionText: "Ramadan begins with the intention of Taqwa (God-consciousness). Fasting is a shield that protects the soul and sharpens our spiritual focus.",
+    journalQuestion: "What is your primary intention for this Ramadan? How do you hope to change by the end of these 30 days?",
     dua: "Allahumma laka sumtu wa bika amantu wa 'ala rizqika aftartu."
   },
   {
     id: '2',
     day: 2,
-    ayah: "The month of Ramadhan [is that] in which was revealed the Qur'an, a guidance for the people and clear proofs of guidance.",
-    reflectionText: "The heartbeat of Ramadan is the Quran. It was in this month that the heavens spoke to the earth, delivering a message of timeless wisdom.",
-    journalQuestion: "Which verse from the Quran has resonated most with your current life situation lately? Why?",
-    dua: "Allahumma ij'alil-Qur'ana rabi'a qulubina."
+    arabicAyah: "شَهْرُ رَمَضَانَ الَّذِي أُنزِلَ فِيهِ الْقُرْآنُ هُدًى لِّلنَّاسِ وَبَيِّنَاتٍ مِّنَ الْهُدَىٰ وَالْفُرْقَانِ",
+    ayah: "The month of Ramadhan [is that] in which was revealed the Qur'an, a guidance for the people and clear proofs of guidance and criterion.",
+    reflectionText: "The Quran is the heart of Ramadan. It is the light that guides us through the darkness and the criterion that helps us distinguish right from wrong.",
+    journalQuestion: "How can you make the Quran a more central part of your daily life this month?",
+    dua: "Allahumma ij'alil-Qur'ana rabi'a qulubina wa nura sudurina."
+  },
+  {
+    id: '3',
+    day: 3,
+    arabicAyah: "وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ ۖ أُجِيبُ دَعْوَةَ الدَّاعِ إِذَا دَعَانِ",
+    ayah: "And when My servants ask you, [O Muhammad], concerning Me - indeed I am near. I respond to the invocation of the supplicant when he calls upon Me.",
+    reflectionText: "Allah is closer to us than our jugular vein. He hears every whisper of our hearts. Ramadan is the perfect time to strengthen our personal connection through Dua.",
+    journalQuestion: "If you could ask Allah for one thing that would transform your spiritual state, what would it be?",
+    dua: "Ya Hayyu Ya Qayyum, bi rahmatika astagheeth."
+  },
+  {
+    id: '4',
+    day: 4,
+    arabicAyah: "يَا أَيُّهَا الَّذِينَ آمَنُوا اسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ ۚ إِنَّ اللَّهَ مَعَ الصَّابِرِينَ",
+    ayah: "O you who have believed, seek help through patience and prayer. Indeed, Allah is with the patient.",
+    reflectionText: "Patience and prayer are the two wings that carry the believer through trials. Fasting is the ultimate exercise in Sabr (patience).",
+    journalQuestion: "In what area of your life do you need more patience right now? How can prayer help you achieve it?",
+    dua: "Rabbana afrigh 'alayna sabran wa tawaffana muslimeen."
+  },
+  {
+    id: '5',
+    day: 5,
+    arabicAyah: "وَسَارِعُوا إِلَىٰ مَغْفِرَةٍ مِّن رَّبِّكُمْ وَجَنَّةٍ عَرْضُهَا السَّمَاوَاتُ وَالْأَرْضُ أُعِدَّتْ لِلْمُتَّقِينَ",
+    ayah: "And hasten to forgiveness from your Lord and a garden as wide as the heavens and earth, prepared for the righteous.",
+    reflectionText: "Ramadan is a race towards mercy. We should not delay our repentance or our good deeds. The gates of Paradise are open.",
+    journalQuestion: "What is one thing you are holding onto that you need to ask forgiveness for today?",
+    dua: "Allahumma innaka 'afuwwun tuhibbul 'afwa fa'fu 'anni."
+  },
+  {
+    id: '6',
+    day: 6,
+    arabicAyah: "فَبِمَا رَحْمَةٍ مِّنَ اللَّهِ لِنتَ لَهُمْ ۖ وَلَوْ كُنتَ فَظًّا غَلِيظَ الْقَلْبِ لَانفَضُّوا مِنْ حَوْلِكَ",
+    ayah: "So by mercy from Allah, [O Muhammad], you were lenient with them. And if you had been rude [in speech] and harsh in heart, they would have disbanded from about you.",
+    reflectionText: "Kindness and gentleness are signs of a heart touched by divine mercy. Our character while fasting should reflect this softness.",
+    journalQuestion: "How can you show more leniency and kindness to those around you today, especially when you feel tired or hungry?",
+    dua: "Allahumma ahsin khuluqi kama ahsanta khalqi."
+  },
+  {
+    id: '7',
+    day: 7,
+    arabicAyah: "إِنَّ الصَّلَاةَ كَانَتْ عَلَى الْمُؤْمِنِينَ كِتَابًا مَّوْقُوتًا",
+    ayah: "Indeed, prayer has been decreed upon the believers a decree of specified times.",
+    reflectionText: "Our prayers anchor our day. In Ramadan, we find rhythm in the sacred timings of Suhoor, Salah, and Iftar.",
+    journalQuestion: "How does observing the prayer times strictly change your perception of time and productivity?",
+    dua: "Rabbi-j'alni muqeemas-salati wa min dhurriyyati."
+  },
+  {
+    id: '8',
+    day: 8,
+    arabicAyah: "الْيَوْمَ أَكْمَلْتُ لَكُمْ دِينَكُمْ وَأَتْمَمْتُ عَلَيْكُمْ نِعْمَتِي وَرَضِيتُ لَكُمُ الْإِسْلَامَ دِينًا",
+    ayah: "This day I have perfected for you your religion and completed My favor upon you and have approved for you Islam as religion.",
+    reflectionText: "Gratitude for the gift of Islam is a central theme of a believer's life. We are blessed to have a clear path to follow.",
+    journalQuestion: "What are three specific blessings of being a Muslim that you are most grateful for today?",
+    dua: "Radhitu billahi Rabban wa bil-Islami deenan wa bi Muhammadin nabiyya."
+  },
+  {
+    id: '9',
+    day: 9,
+    arabicAyah: "قُلْ إِنَّ صَلَاتِي وَنُسُكِي وَمَحْيَايَ وَمَمَاتِي لِلَّهِ رَبِّ الْعَالَمِينَ",
+    ayah: "Say, 'Indeed, my prayer, my rites of sacrifice, my living and my dying are for Allah, Lord of the worlds.'",
+    reflectionText: "Total devotion means living every moment for the sake of Allah. Ramadan helps us realign our entire existence with this purpose.",
+    journalQuestion: "How can you turn a mundane daily task into an act of worship today?",
+    dua: "Allahumma a'inni 'ala dhikrika wa shukrika wa husni 'ibadatika."
+  },
+  {
+    id: '10',
+    day: 10,
+    arabicAyah: "وَرَحْمَتِي وَسِعَتْ كُلَّ شَيْءٍ",
+    ayah: "But My mercy encompasses all things.",
+    reflectionText: "As we conclude the first ten days—the days of Mercy—we reflect on how Allah's love and compassion surround us even when we fail.",
+    journalQuestion: "Where have you seen Allah's mercy manifest in your life during the past ten days?",
+    dua: "Rabbi-ghfir warham wa Anta khayrur-rahimeen."
+  },
+  {
+    id: '11',
+    day: 11,
+    arabicAyah: "إِنَّمَا الْمُؤْمِنُونَ الَّذِينَ إِذَا ذُكِرَ اللَّهُ وَجِلَتْ قُلُوبُهُمْ وَإِذَا تُلِيَتْ عَلَيْهِمْ آيَاتُهُ زَادَتْهُمْ إِيمَانًا",
+    ayah: "The believers are only those who, when Allah is mentioned, their hearts become fearful, and when His verses are recited to them, it increases them in faith.",
+    reflectionText: "Entering the days of Forgiveness, we seek to soften our hearts so they vibrate with the mention of our Creator.",
+    journalQuestion: "Does your heart feel softer today than it did on Day 1? What has contributed to this change?",
+    dua: "Ya Muqallibal-qulub, thabbit qalbi 'ala deenik."
+  },
+  {
+    id: '12',
+    day: 12,
+    arabicAyah: "خُذْ مِنْ أَمْوَالِهِمْ صَدَقَةً تُطَهِّرُهُمْ وَتُزَكِّيهِم بِهَا",
+    ayah: "Take, [O, Muhammad], from their wealth a charity by which you purify them and cause them increase.",
+    reflectionText: "Charity is not just about helping others; it is a purification for our own souls. It removes greed and attachment to the material world.",
+    journalQuestion: "In what way can you give today—whether it's wealth, time, or a kind word—to purify your heart?",
+    dua: "Allahumma barik lana feema razaqtana."
+  },
+  {
+    id: '13',
+    day: 13,
+    arabicAyah: "الَّذِينَ آمَنُوا وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ اللَّهِ ۗ أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",
+    ayah: "Those who have believed and whose hearts are assured by the remembrance of Allah. Unquestionably, by the remembrance of Allah hearts are assured.",
+    reflectionText: "In a world of noise and anxiety, Dhikr (remembrance) is the only true source of tranquility. Let your tongue stay moist with His praise.",
+    journalQuestion: "When do you feel most at peace? How can you incorporate more Dhikr into those moments?",
+    dua: "Subhanallahi wa bihamdihi, Subhanallahil-'Azheem."
+  },
+  {
+    id: '14',
+    day: 14,
+    arabicAyah: "لَئِن شَكَرْتُمْ لَأَزِيدَنَّكُمْ",
+    ayah: "If you are grateful, I will surely increase you [in favor].",
+    reflectionText: "Gratitude is the key to abundance. When we focus on what we have, Allah blesses us with more. When we focus on what we lack, we lose sight of His grace.",
+    journalQuestion: "List five small things you often take for granted but are deeply grateful for today.",
+    dua: "Alhamdulillah 'ala kulli hal."
+  },
+  {
+    id: '15',
+    day: 15,
+    arabicAyah: "إِنَّ اللَّهَ مَعَ الَّذِينَ اتَّقَوا وَّالَّذِينَ هُم مُّحْسِنُونَ",
+    ayah: "Indeed, Allah is with those who fear Him and those who are doers of good.",
+    reflectionText: "We are halfway through. This is the time to renew our Ihsan—doing everything as if we see Allah, or knowing that He sees us.",
+    journalQuestion: "How can you elevate the quality of your worship today? What would 'excellence' look like in your next prayer?",
+    dua: "Allahumma a'inni 'ala dhikrika wa shukrika wa husni 'ibadatika."
+  },
+  {
+    id: '16',
+    day: 16,
+    arabicAyah: "سُبْحَانَ الَّذِي أَسْرَىٰ بِعَبْدِهِ لَيْلًا مِّنَ الْمَسْجِدِ الْحَرَامِ إِلَى الْمَسْجِدِ الْأَقْصَى",
+    ayah: "Exalted is He who took His Servant by night from al-Masjid al-Haram to al-Masjid al-Aqsa.",
+    reflectionText: "Reflecting on the miraculous journeys of the soul. Our prayers are our own 'Mi'raj'—a way to ascend and meet our Lord daily.",
+    journalQuestion: "Do you treat your prayer as a meeting with the Divine, or as a task to be completed?",
+    dua: "Allahumma inni as'aluka hubbak wa hubba man yuhibbuk."
+  },
+  {
+    id: '17',
+    day: 17,
+    arabicAyah: "إِذْ أَوَى الْفِتْيَةُ إِلَى الْكَهْفِ فَقَالُوا رَبَّنَا آتِنَا مِن لَّدُنكَ رَحْمَةً وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًا",
+    ayah: "When the youths retreated to the cave and said, 'Our Lord, grant us from Yourself mercy and prepare for us from our affair right guidance.'",
+    reflectionText: "Sometimes we must retreat from the world to find ourselves and our Lord. Ramadan is our spiritual cave.",
+    journalQuestion: "What distractions do you need to 'retreat' from for the remainder of this month?",
+    dua: "Rabbana atina mil-ladunka rahmatan wa hayyi' lana min amrina rashada."
+  },
+  {
+    id: '18',
+    day: 18,
+    arabicAyah: "قَالَ رَبِّ اشْرَحْ لِي صَدْرِي * وَيَسِّرْ لِي أَمْرِي",
+    ayah: "[Moses] said, 'My Lord, expand for me my breast [with assurance] and ease for me my task.'",
+    reflectionText: "True ease comes from an expanded heart. When Allah opens our chests, even the most difficult path becomes manageable.",
+    journalQuestion: "What 'tightness' are you feeling in your heart? Ask Allah to expand it with His light.",
+    dua: "Rabbi-shrah li sadri wa yassir li amri."
+  },
+  {
+    id: '19',
+    day: 19,
+    arabicAyah: "لَّا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ",
+    ayah: "There is no deity except You; exalted are You. Indeed, I have been of the wrongdoers.",
+    reflectionText: "The prayer of Yunus (AS) in the belly of the whale is the ultimate cry of the soul in distress. Admission of our faults is the first step to relief.",
+    journalQuestion: "What 'darkness' are you currently in? How can this Dua be your light to get out?",
+    dua: "La ilaha illa Anta subhanaka inni kuntu minaz-zhalimeen."
+  },
+  {
+    id: '20',
+    day: 20,
+    arabicAyah: "اللَّهُ نُورُ السَّمَاوَاتِ وَالْأَرْضِ",
+    ayah: "Allah is the Light of the heavens and the earth.",
+    reflectionText: "As we enter the final ten nights, we search for the ultimate light. May Allah illuminate our hearts, our homes, and our graves.",
+    journalQuestion: "How can you be a source of light for someone else today?",
+    dua: "Allahummaj-'al fi qalbi nuran wa fi basari nuran."
+  },
+  {
+    id: '21',
+    day: 21,
+    arabicAyah: "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا",
+    ayah: "Our Lord, grant us from among our wives and offspring comfort to our eyes and make us an example for the righteous.",
+    reflectionText: "The first of the last ten nights. We pray for our families and for our legacy. We seek to be leaders in goodness.",
+    journalQuestion: "What kind of spiritual legacy do you want to leave for your children or those who look up to you?",
+    dua: "Rabbana hab lana min azwajina wa dhurriyyatina qurrata a'yun."
+  },
+  {
+    id: '22',
+    day: 22,
+    arabicAyah: "إِنَّ الْمُسْلِمِينَ وَالْمُسْلِمَاتِ وَالْمُؤْمِنِينَ وَالْمُؤْمِنَاتِ... أَعَدَّ اللَّهُ لَهُم مَّغْفِرَةً وَأَجْرًا عَظِيمًا",
+    ayah: "Indeed, the Muslim men and Muslim women, the believing men and believing women... Allah has prepared for them forgiveness and a great reward.",
+    reflectionText: "Equality in spiritual potential. Every soul has the chance to reach the highest stations through devotion and consistency.",
+    journalQuestion: "Which of the qualities mentioned in Surah Ahzab v35 do you feel you need to work on most?",
+    dua: "Allahumma inni as'alukal-jannata wa ma qarraba ilayha min qawlin aw 'amal."
+  },
+  {
+    id: '23',
+    day: 23,
+    arabicAyah: "قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَىٰ أَنفُسِهِمْ لَا تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ",
+    ayah: "Say, 'O My servants who have transgressed against themselves [by sinning], do not despair of the mercy of Allah.'",
+    reflectionText: "Despair is a trick of the devil. Allah's mercy is greater than any sin. It is never too late to turn back.",
+    journalQuestion: "Is there a sin you think is too big to be forgiven? Remind yourself of this verse and let it go.",
+    dua: "Astaghfirullahal-'Azheem wa atubu ilayh."
+  },
+  {
+    id: '24',
+    day: 24,
+    arabicAyah: "وَقَالَ رَبُّكُمُ ادْعُونِي أَسْتَجِبْ لَكُمْ",
+    ayah: "And your Lord says, 'Call upon Me; I will respond to you.'",
+    reflectionText: "The promise of response. Allah loves to be asked. These final nights are for the most sincere and desperate of our requests.",
+    journalQuestion: "Make a list of 10 things you want to ask Allah for tonight. Be bold in your requests.",
+    dua: "Allahumma inni as'aluka min khayri ma sa'alaka minhu nabiyyuka Muhammad."
+  },
+  {
+    id: '25',
+    day: 25,
+    arabicAyah: "وَالَّذِينَ اسْتَجَابُوا لِرَبِّهِمْ وَأَقَامُوا الصَّلَاةَ وَأَمْرُهُمْ شُورَىٰ بَيْنَهُمْ",
+    ayah: "And those who have responded to their lord and established prayer and whose affair is [determined by] consultation among themselves.",
+    reflectionText: "Community and consultation. We are not meant to walk this path alone. We support each other in faith.",
+    journalQuestion: "Who in your community can you reach out to today to offer support or seek advice?",
+    dua: "Allahumma-llif bayna qulubina."
+  },
+  {
+    id: '26',
+    day: 26,
+    arabicAyah: "إِنَّمَا الْمُؤْمِنُونَ إِخْوَةٌ فَأَصْلِحُوا بَيْنَ أَخَوَيْكُمْ",
+    ayah: "The believers are but brothers, so make settlement between your brothers.",
+    reflectionText: "Brotherhood and sisterhood. Ramadan is a time to mend broken relationships and forgive those who have wronged us.",
+    journalQuestion: "Is there someone you are holding a grudge against? Can you find it in your heart to forgive them for Allah's sake?",
+    dua: "Allahumma-ghfir lana wa li ikhwaninal-ladheena sabaquna bil-iman."
+  },
+  {
+    id: '27',
+    day: 27,
+    arabicAyah: "إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ",
+    ayah: "Indeed, We sent the Qur'an down during the Night of Decree.",
+    reflectionText: "The night better than a thousand months. A lifetime of worship in a single night. Seek it with every fiber of your being.",
+    journalQuestion: "If tonight is Laylatul Qadr, how would you spend every single second of it?",
+    dua: "Allahumma innaka 'afuwwun tuhibbul 'afwa fa'fu 'anni."
+  },
+  {
+    id: '28',
+    day: 28,
+    arabicAyah: "وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا * وَيَرْزُقْهُ مِنْ حَيْثُ لَا يَحْتَسِبُ",
+    ayah: "And whoever fears Allah - He will make for him a way out and will provide for him from where he does not expect.",
+    reflectionText: "Taqwa is the solution to every problem. When we put Allah first, He opens doors we didn't even know existed.",
+    journalQuestion: "Reflect on a time when Allah provided for you from an unexpected source. How did that feel?",
+    dua: "Hasbunallahu wa ni'mal wakeel."
+  },
+  {
+    id: '29',
+    day: 29,
+    arabicAyah: "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا * إِنَّ مَعَ الْعُسْرِ يُسْرًا",
+    ayah: "For indeed, with hardship [will be] ease. Indeed, with hardship [will be] ease.",
+    reflectionText: "Ease is not what comes after hardship; it is what accompanies it. Allah never gives a burden without the strength to carry it.",
+    journalQuestion: "What ease have you found within the hardships of this month's fasting?",
+    dua: "Allahumma la sahla illa ma ja'altahu sahla."
+  },
+  {
+    id: '30',
+    day: 30,
+    arabicAyah: "وَلِتُكْمِلُوا الْعِدَّةَ وَلِتُكَبِّرُوا اللَّهَ عَلَىٰ مَا هَدَاكُمْ وَلَعَلَّكُمْ تَشْكُرُونَ",
+    ayah: "And [He wants] for you to complete the period and to glorify Allah for that [to] which He has guided you; and perhaps you will be grateful.",
+    reflectionText: "We have reached the end. We celebrate not because the fast is over, but because we were guided to complete it. Our hearts are full of Takbir and Shukr.",
+    journalQuestion: "How has your soul changed over these 30 days? What will you carry forward into the rest of the year?",
+    dua: "Allahu Akbar, Allahu Akbar, La ilaha illallah, Allahu Akbar, Allahu Akbar, wa lillahil-hamd."
   }
 ];
 

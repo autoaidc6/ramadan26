@@ -26,6 +26,13 @@ const ReflectionCard: React.FC<ReflectionCardProps> = ({ reflection }) => {
       <div className="p-10 pt-12 flex flex-col flex-grow">
         <div className="mb-8">
           <span className="text-[9px] font-bold tracking-[0.4em] text-[#D4AF37] uppercase block mb-4">Daily Verse</span>
+          {reflection.arabicAyah && (
+            <p className={`font-arabic text-4xl text-right mb-6 leading-loose dir-rtl ${
+              theme === 'dark' ? 'text-[#D4AF37]' : 'text-[#050a14]'
+            }`} dir="rtl">
+              {reflection.arabicAyah}
+            </p>
+          )}
           <h3 className={`font-serif text-2xl italic leading-relaxed tracking-tight ${
             theme === 'dark' ? 'text-white' : 'text-[#050a14]'
           }`}>
