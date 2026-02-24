@@ -14,28 +14,62 @@ const AdminDashboard: React.FC = () => {
   const [pPremium, setPPremium] = useState(false);
   const [pThumb, setPThumb] = useState('');
   const [pFile, setPFile] = useState('');
+  const [thumbFile, setThumbFile] = useState<File | null>(null);
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
 
   // Tradition Form State
   const [tTitle, setTTitle] = useState('');
   const [tDesc, setTDesc] = useState('');
   const [tIcon, setTIcon] = useState('✨');
 
+  const uploadFile = async (file: File, bucket: string) => {
+    if (!supabase) return null;
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+    
+    const { error: uploadError } = await supabase.storage
+      .from(bucket)
+      .upload(fileName, file);
+
+    if (uploadError) throw uploadError;
+
+    const { data: { publicUrl } } = supabase.storage
+      .from(bucket)
+      .getPublicUrl(fileName);
+
+    return publicUrl;
+  };
+
   const handleAddPrintable = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!supabase) return;
     setLoading(true);
     try {
+      let finalThumbUrl = pThumb;
+      let finalFileUrl = pFile;
+
+      if (thumbFile) {
+        const uploadedUrl = await uploadFile(thumbFile, 'printables');
+        if (uploadedUrl) finalThumbUrl = uploadedUrl;
+      }
+
+      if (pdfFile) {
+        const uploadedUrl = await uploadFile(pdfFile, 'printables');
+        if (uploadedUrl) finalFileUrl = uploadedUrl;
+      }
+
       const { error } = await supabase.from('printables').insert([{
         title: pTitle,
         description: pDesc,
         category: pCat,
         is_premium: pPremium,
-        thumbnail_url: pThumb,
-        file_url: pFile
+        thumbnail_url: finalThumbUrl,
+        file_url: finalFileUrl
       }]);
       if (error) throw error;
       alert("Sacred Resource Published Successfully.");
       setPTitle(''); setPDesc(''); setPThumb(''); setPFile('');
+      setThumbFile(null); setPdfFile(null);
     } catch (err: any) { alert(err.message); }
     finally { setLoading(false); }
   };
@@ -116,12 +150,28 @@ const AdminDashboard: React.FC = () => {
                 </div>
               </div>
               <div className="group">
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 group-focus-within:text-[#D4AF37] transition-colors">Thumbnail URL</label>
-                <input required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-[#D4AF37] transition-all" value={pThumb} onChange={e => setPThumb(e.target.value)} placeholder="Direct image link (Unsplash, etc)" />
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 group-focus-within:text-[#D4AF37] transition-colors">Thumbnail (Upload or URL)</label>
+                <div className="flex flex-col gap-4">
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={e => setThumbFile(e.target.files?.[0] || null)}
+                    className="text-[10px] text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-[#D4AF37]/10 file:text-[#D4AF37] hover:file:bg-[#D4AF37]/20 cursor-pointer"
+                  />
+                  <input className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-[#D4AF37] transition-all" value={pThumb} onChange={e => setPThumb(e.target.value)} placeholder="Or enter direct image link..." />
+                </div>
               </div>
               <div className="group">
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 group-focus-within:text-[#D4AF37] transition-colors">Downloadable File URL (PDF)</label>
-                <input required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-[#D4AF37] transition-all" value={pFile} onChange={e => setPFile(e.target.value)} placeholder="Link to the PDF file" />
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 group-focus-within:text-[#D4AF37] transition-colors">Resource File (Upload or URL)</label>
+                <div className="flex flex-col gap-4">
+                  <input 
+                    type="file" 
+                    accept=".pdf,.zip,.jpg,.png"
+                    onChange={e => setPdfFile(e.target.files?.[0] || null)}
+                    className="text-[10px] text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-bold file:bg-[#D4AF37]/10 file:text-[#D4AF37] hover:file:bg-[#D4AF37]/20 cursor-pointer"
+                  />
+                  <input className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-[#D4AF37] transition-all" value={pFile} onChange={e => setPFile(e.target.value)} placeholder="Or enter direct file link..." />
+                </div>
               </div>
             </div>
             <div className="md:col-span-2 pt-6">
