@@ -7,9 +7,16 @@ interface PrintableCardProps {
 }
 
 const PrintableCard: React.FC<PrintableCardProps> = ({ item }) => {
+  const handleDownload = () => {
+    if (item.fileUrl) {
+      window.open(item.fileUrl, '_blank');
+    } else {
+      alert("This resource is being prepared for download.");
+    }
+  };
+
   return (
     <div className="group relative bg-[#fdfcf0] rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col h-full border border-[#D4AF37]/10 hover:border-[#D4AF37]/40">
-      {/* Thumbnail Container */}
       <div className="relative h-48 overflow-hidden bg-slate-100">
         <img 
           src={item.thumbnailUrl} 
@@ -18,12 +25,10 @@ const PrintableCard: React.FC<PrintableCardProps> = ({ item }) => {
         />
         <div className="absolute inset-0 bg-[#0a192f]/20 group-hover:bg-transparent transition-colors duration-500" />
         
-        {/* Category Badge */}
         <div className="absolute top-4 left-4 px-3 py-1 bg-white/90 backdrop-blur-md rounded-full border border-[#D4AF37]/20 shadow-sm">
           <span className="text-[10px] font-bold text-[#0a192f] uppercase tracking-wider">{item.category}</span>
         </div>
 
-        {/* Premium Badge */}
         {item.isPremium && (
           <div className="absolute top-4 right-4 flex items-center gap-1.5 px-3 py-1 bg-[#D4AF37] text-[#0a192f] rounded-full shadow-lg animate-pulse">
             <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -42,7 +47,10 @@ const PrintableCard: React.FC<PrintableCardProps> = ({ item }) => {
           {item.description}
         </p>
         
-        <button className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-[#D4AF37] text-[#D4AF37] font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-[#D4AF37] hover:text-white transition-all duration-300 group/btn">
+        <button 
+          onClick={handleDownload}
+          className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-[#D4AF37] text-[#D4AF37] font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-[#D4AF37] hover:text-white transition-all duration-300 group/btn"
+        >
           <svg className="w-4 h-4 transition-transform group-hover/btn:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>

@@ -62,7 +62,6 @@ export type UserRole = 'admin' | 'user';
 
 export interface Profile {
   id: string;
-  username: string;
   role: UserRole;
   avatar_url?: string;
 }

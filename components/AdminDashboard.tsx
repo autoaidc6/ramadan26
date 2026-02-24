@@ -13,6 +13,7 @@ const AdminDashboard: React.FC = () => {
   const [pCat, setPCat] = useState<PrintableCategory>('Planners');
   const [pPremium, setPPremium] = useState(false);
   const [pThumb, setPThumb] = useState('');
+  const [pFile, setPFile] = useState('');
 
   // Tradition Form State
   const [tTitle, setTTitle] = useState('');
@@ -21,6 +22,7 @@ const AdminDashboard: React.FC = () => {
 
   const handleAddPrintable = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!supabase) return;
     setLoading(true);
     try {
       const { error } = await supabase.from('printables').insert([{
@@ -28,17 +30,19 @@ const AdminDashboard: React.FC = () => {
         description: pDesc,
         category: pCat,
         is_premium: pPremium,
-        thumbnail_url: pThumb
+        thumbnail_url: pThumb,
+        file_url: pFile
       }]);
       if (error) throw error;
-      alert("Printable Resource Added.");
-      setPTitle(''); setPDesc(''); setPThumb('');
+      alert("Sacred Resource Published Successfully.");
+      setPTitle(''); setPDesc(''); setPThumb(''); setPFile('');
     } catch (err: any) { alert(err.message); }
     finally { setLoading(false); }
   };
 
   const handleAddTradition = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!supabase) return;
     setLoading(true);
     try {
       const { error } = await supabase.from('traditions').insert([{
@@ -47,7 +51,7 @@ const AdminDashboard: React.FC = () => {
         icon: tIcon
       }]);
       if (error) throw error;
-      alert("Sacred Tradition Added.");
+      alert("Sacred Tradition Added to Library.");
       setTTitle(''); setTDesc('');
     } catch (err: any) { alert(err.message); }
     finally { setLoading(false); }
@@ -55,7 +59,6 @@ const AdminDashboard: React.FC = () => {
 
   return (
     <div className="bg-[#0a101f] rounded-[2.5rem] p-12 border border-[#D4AF37]/20 shadow-luxury relative overflow-hidden">
-      {/* Decorative Glow */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-[#D4AF37]/5 blur-[100px] -mr-48 -mt-48 pointer-events-none"></div>
 
       <div className="relative z-10">
@@ -94,23 +97,32 @@ const AdminDashboard: React.FC = () => {
               </div>
             </div>
             <div className="space-y-8">
-              <div className="group">
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 group-focus-within:text-[#D4AF37] transition-colors">Category</label>
-                <select className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-[#D4AF37] transition-all appearance-none cursor-pointer" value={pCat} onChange={e => setPCat(e.target.value as PrintableCategory)}>
-                  <option value="Planners" className="bg-[#0a101f]">Planners</option>
-                  <option value="Kids" className="bg-[#0a101f]">Kids</option>
-                  <option value="Trackers" className="bg-[#0a101f]">Trackers</option>
-                  <option value="Family" className="bg-[#0a101f]">Family</option>
-                </select>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="group">
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 group-focus-within:text-[#D4AF37] transition-colors">Category</label>
+                  <select className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-[#D4AF37] transition-all appearance-none cursor-pointer" value={pCat} onChange={e => setPCat(e.target.value as PrintableCategory)}>
+                    <option value="Planners" className="bg-[#0a101f]">Planners</option>
+                    <option value="Kids" className="bg-[#0a101f]">Kids</option>
+                    <option value="Trackers" className="bg-[#0a101f]">Trackers</option>
+                    <option value="Family" className="bg-[#0a101f]">Family</option>
+                  </select>
+                </div>
+                <div className="group">
+                  <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 group-focus-within:text-[#D4AF37] transition-colors">Premium</label>
+                  <label className="flex items-center h-[58px] bg-white/5 border border-white/10 rounded-2xl px-6 cursor-pointer hover:bg-white/10 transition-all">
+                    <input type="checkbox" checked={pPremium} onChange={e => setPPremium(e.target.checked)} className="w-5 h-5 rounded border-white/10 accent-[#D4AF37]" />
+                    <span className="text-slate-400 text-[10px] font-bold uppercase ml-3">Premium</span>
+                  </label>
+                </div>
               </div>
               <div className="group">
-                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 group-focus-within:text-[#D4AF37] transition-colors">Imagery URL</label>
-                <input required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-[#D4AF37] transition-all" value={pThumb} onChange={e => setPThumb(e.target.value)} placeholder="Unsplash or direct image link" />
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 group-focus-within:text-[#D4AF37] transition-colors">Thumbnail URL</label>
+                <input required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-[#D4AF37] transition-all" value={pThumb} onChange={e => setPThumb(e.target.value)} placeholder="Direct image link (Unsplash, etc)" />
               </div>
-              <label className="flex items-center gap-4 cursor-pointer p-4 rounded-2xl border border-white/5 hover:bg-white/5 transition-all">
-                <input type="checkbox" checked={pPremium} onChange={e => setPPremium(e.target.checked)} className="w-5 h-5 rounded border-white/10 accent-[#D4AF37]" />
-                <span className="text-slate-400 text-sm font-light">Enable Premium Sanctuary Access</span>
-              </label>
+              <div className="group">
+                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-[0.3em] mb-3 group-focus-within:text-[#D4AF37] transition-colors">Downloadable File URL (PDF)</label>
+                <input required className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white outline-none focus:border-[#D4AF37] transition-all" value={pFile} onChange={e => setPFile(e.target.value)} placeholder="Link to the PDF file" />
+              </div>
             </div>
             <div className="md:col-span-2 pt-6">
               <button disabled={loading} className="w-full py-5 bg-[#D4AF37] text-[#050a14] font-bold tracking-[0.4em] uppercase text-xs rounded-2xl hover:shadow-luxury hover:-translate-y-1 transition-all duration-500 disabled:opacity-50">

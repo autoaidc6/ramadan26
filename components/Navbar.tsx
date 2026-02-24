@@ -52,7 +52,7 @@ const Navbar: React.FC = () => {
             {user ? (
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <p className="text-[9px] text-white font-bold uppercase tracking-widest">{profile?.username || user.email.split('@')[0]}</p>
+                  <p className="text-[9px] text-white font-bold uppercase tracking-widest">{user.email.split('@')[0]}</p>
                   <p className="text-[7px] text-[#D4AF37] uppercase tracking-widest">{role}</p>
                 </div>
                 <button 
