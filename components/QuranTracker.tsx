@@ -2,11 +2,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { JuzData } from '../types';
 import NotesModal from './NotesModal';
+import { useTheme } from '../contexts/ThemeContext';
 
 const QuranTracker: React.FC = () => {
   const [juzList, setJuzList] = useState<JuzData[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
   const [selectedJuz, setSelectedJuz] = useState<number | null>(null);
+  const { theme } = useTheme();
 
   useEffect(() => {
     const saved = localStorage.getItem('quran_tracker_v1');
@@ -59,7 +61,7 @@ const QuranTracker: React.FC = () => {
 
   const triggerConfetti = async () => {
     try {
-      const confetti = (await import('https://esm.sh/canvas-confetti')).default;
+      const confetti = (await import('canvas-confetti')).default;
       confetti({
         particleCount: 100,
         spread: 60,
@@ -82,11 +84,13 @@ const QuranTracker: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto p-6 md:p-12">
       {/* Stats Summary */}
-      <div className="mb-12 flex flex-col md:flex-row items-center justify-between gap-8 bg-white p-8 rounded-2xl shadow-xl border border-[#D4AF37]/10">
+      <div className={`mb-12 flex flex-col md:flex-row items-center justify-between gap-8 p-8 rounded-2xl shadow-xl border transition-colors duration-500 ${
+        theme === 'dark' ? 'bg-[#0a101f] border-white/5' : 'bg-white border-[#D4AF37]/10'
+      }`}>
         <div className="flex-1 w-full">
           <div className="flex justify-between items-end mb-4">
             <div>
-              <h3 className="font-serif text-3xl text-[#0a192f]">Quran Completion</h3>
+              <h3 className={`font-serif text-3xl ${theme === 'dark' ? 'text-white' : 'text-[#0a192f]'}`}>Quran Completion</h3>
               <p className="text-slate-500">Track your journey through the 30 Juz.</p>
             </div>
             <div className="text-right">
@@ -94,7 +98,7 @@ const QuranTracker: React.FC = () => {
               <span className="text-slate-400 font-bold ml-1">/ 30</span>
             </div>
           </div>
-          <div className="h-4 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+          <div className={`h-4 w-full rounded-full overflow-hidden border ${theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-slate-100 border-slate-200'}`}>
             <div 
               className="h-full bg-gradient-to-r from-[#D4AF37] to-[#facc15] transition-all duration-1000 ease-out"
               style={{ width: `${completionStats.progress}%` }}
@@ -104,7 +108,9 @@ const QuranTracker: React.FC = () => {
         
         <button 
           onClick={resetProgress}
-          className="px-6 py-2 text-xs font-bold tracking-widest text-slate-400 uppercase border border-slate-200 rounded-lg hover:border-red-400 hover:text-red-500 transition-all"
+          className={`px-6 py-2 text-xs font-bold tracking-widest uppercase border rounded-lg transition-all ${
+            theme === 'dark' ? 'text-slate-400 border-white/10 hover:border-red-400/50 hover:text-red-400' : 'text-slate-400 border-slate-200 hover:border-red-400 hover:text-red-500'
+          }`}
         >
           Reset Progress
         </button>
@@ -118,15 +124,15 @@ const QuranTracker: React.FC = () => {
             className={`relative group h-44 rounded-2xl border-2 transition-all duration-500 flex flex-col overflow-hidden ${
               juz.completed 
                 ? 'bg-[#D4AF37] border-[#D4AF37] shadow-lg scale-[1.02]' 
-                : 'bg-white border-slate-100 hover:border-[#D4AF37]/50 hover:shadow-md'
+                : theme === 'dark' ? 'bg-[#0a101f] border-white/5 hover:border-[#D4AF37]/50 hover:shadow-md' : 'bg-white border-slate-100 hover:border-[#D4AF37]/50 hover:shadow-md'
             }`}
           >
             {/* Background pattern */}
-            <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0l7.5 7.5-7.5 7.5-7.5-7.5z' fill='black'/%3E%3C/svg%3E")` }} />
+            <div className="absolute inset-0 opacity-[0.05] pointer-events-none" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0l7.5 7.5-7.5 7.5-7.5-7.5z' fill='${theme === 'dark' ? 'white' : 'black'}'/%3E%3C/svg%3E")` }} />
 
             <div className="relative z-10 p-5 flex-grow flex flex-col justify-between">
               <div className="flex justify-between items-start">
-                <span className={`font-serif text-3xl font-bold ${juz.completed ? 'text-[#0a192f]' : 'text-slate-300'}`}>
+                <span className={`font-serif text-3xl font-bold ${juz.completed ? 'text-[#0a192f]' : theme === 'dark' ? 'text-white/20' : 'text-slate-300'}`}>
                   {juz.number}
                 </span>
                 <button 
@@ -134,7 +140,7 @@ const QuranTracker: React.FC = () => {
                   className={`p-2 rounded-full transition-colors ${
                     juz.completed 
                       ? 'bg-white/20 hover:bg-white/40 text-[#0a192f]' 
-                      : 'bg-slate-50 hover:bg-slate-100 text-[#D4AF37]'
+                      : theme === 'dark' ? 'bg-white/5 hover:bg-white/10 text-[#D4AF37]' : 'bg-slate-50 hover:bg-slate-100 text-[#D4AF37]'
                   }`}
                   title="View Notes"
                 >

@@ -4,6 +4,7 @@ import { Printable, PrintableCategory } from '../types';
 import PrintableCard from './PrintableCard';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 const CATEGORIES: PrintableCategory[] = ['All', 'Planners', 'Kids', 'Trackers', 'Family'];
 
@@ -12,6 +13,7 @@ const PrintablesGallery: React.FC = () => {
   const [printables, setPrintables] = useState<Printable[]>([]);
   const [loading, setLoading] = useState(true);
   const { role } = useAuth();
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!supabase) {
@@ -87,7 +89,7 @@ const PrintablesGallery: React.FC = () => {
             className={`px-8 py-3 rounded-full text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-500 border ${
               activeTab === cat
                 ? 'bg-[#D4AF37] border-[#D4AF37] text-[#050a14] shadow-luxury scale-105'
-                : 'bg-white border-slate-100 text-slate-400 hover:border-[#D4AF37]/30 hover:text-[#D4AF37]'
+                : theme === 'dark' ? 'bg-white/5 border-white/10 text-slate-400 hover:border-[#D4AF37]/30 hover:text-[#D4AF37]' : 'bg-white border-slate-100 text-slate-400 hover:border-[#D4AF37]/30 hover:text-[#D4AF37]'
             }`}
           >
             {cat}
@@ -120,7 +122,9 @@ const PrintablesGallery: React.FC = () => {
       )}
 
       {!loading && filteredItems.length === 0 && (
-        <div className="text-center py-20 bg-slate-50/50 rounded-3xl border border-dashed border-slate-200">
+        <div className={`text-center py-20 rounded-3xl border border-dashed transition-colors duration-500 ${
+          theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-slate-50/50 border-slate-200'
+        }`}>
           <p className="text-slate-400 font-light italic">
             {!supabase ? "Syncing with cloud sanctuary..." : "The gallery is currently being curated. Check back for new inspirations."}
           </p>

@@ -1,7 +1,9 @@
 
 import React from 'react';
+import { useTheme } from '../contexts/ThemeContext';
 
 const Logo: React.FC = () => {
+  const { theme } = useTheme();
   return (
     <div className="flex items-center gap-4 cursor-pointer group">
       <div className="relative w-12 h-12 flex items-center justify-center">
@@ -30,7 +32,9 @@ const Logo: React.FC = () => {
       </div>
       
       <div className="flex flex-col leading-none">
-        <span className="font-serif text-2xl font-medium tracking-tight text-white group-hover:text-[#D4AF37] transition-colors duration-500">
+        <span className={`font-serif text-2xl font-medium tracking-tight group-hover:text-[#D4AF37] transition-colors duration-500 ${
+          theme === 'dark' ? 'text-white' : 'text-slate-900'
+        }`}>
           Ramadan
         </span>
         <span className="text-[8px] text-[#D4AF37] uppercase tracking-[0.5em] font-bold opacity-80 mt-1">

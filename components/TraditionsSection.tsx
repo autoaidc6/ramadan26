@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Tradition } from '../types';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 
 const TraditionsSection: React.FC = () => {
   const [traditions, setTraditions] = useState<Tradition[]>([]);
   const [loading, setLoading] = useState(true);
   const { role } = useAuth();
+  const { theme } = useTheme();
 
   useEffect(() => {
     if (!supabase) {
@@ -55,11 +57,15 @@ const TraditionsSection: React.FC = () => {
     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
       {traditions.length > 0 ? (
         traditions.map((item, i) => (
-          <div key={item.id} className="group relative overflow-hidden rounded-[2rem] bg-[#0a101f] p-10 border border-white/5 hover:border-[#D4AF37]/30 transition-all duration-700 hover:shadow-luxury hover:-translate-y-2">
+          <div key={item.id} className={`group relative overflow-hidden rounded-[2rem] p-10 border transition-all duration-700 hover:shadow-luxury hover:-translate-y-2 ${
+            theme === 'dark' ? 'bg-[#0a101f] border-white/5 hover:border-[#D4AF37]/30' : 'bg-white border-slate-100 hover:border-[#D4AF37]/30'
+          }`}>
             <div className="mb-8 inline-block p-5 bg-[#D4AF37]/10 rounded-2xl text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-[#050a14] transition-all duration-500 transform group-hover:rotate-[10deg]">
               <span className="text-3xl">{item.icon}</span>
             </div>
-            <h3 className="font-serif text-2xl text-white mb-4 tracking-wide group-hover:text-[#D4AF37] transition-colors">{item.title}</h3>
+            <h3 className={`font-serif text-2xl mb-4 tracking-wide group-hover:text-[#D4AF37] transition-colors ${
+              theme === 'dark' ? 'text-white' : 'text-slate-900'
+            }`}>{item.title}</h3>
             <p className="text-slate-400 text-sm leading-relaxed font-light">
               {item.description}
             </p>

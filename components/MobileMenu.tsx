@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { NavItem } from '../types';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface MobileMenuProps {
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, items, onClose }) => {
+  const { theme } = useTheme();
   if (!isOpen) return null;
 
   return (
@@ -20,11 +22,15 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, items, onClose }) => {
       />
       
       {/* Menu Content */}
-      <nav className="fixed top-0 right-0 bottom-0 w-72 bg-[#0a192f] border-l border-[#D4AF37]/20 p-8 flex flex-col gap-8 shadow-2xl animate-in slide-in-from-right duration-300">
+      <nav className={`fixed top-0 right-0 bottom-0 w-72 border-l p-8 flex flex-col gap-8 shadow-2xl animate-in slide-in-from-right duration-300 ${
+        theme === 'dark' ? 'bg-[#0a192f] border-[#D4AF37]/20' : 'bg-white border-slate-200'
+      }`}>
         <div className="flex justify-end">
           <button 
             onClick={onClose}
-            className="p-2 text-[#D4AF37] hover:bg-[#D4AF37]/10 rounded-full"
+            className={`p-2 rounded-full transition-colors ${
+              theme === 'dark' ? 'text-[#D4AF37] hover:bg-[#D4AF37]/10' : 'text-slate-400 hover:bg-slate-100'
+            }`}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -37,7 +43,9 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, items, onClose }) => {
             <a
               key={item.label}
               href={item.href}
-              className="text-lg font-medium text-slate-200 hover:text-[#D4AF37] transition-colors flex items-center justify-between group"
+              className={`text-lg font-medium transition-colors flex items-center justify-between group ${
+                theme === 'dark' ? 'text-slate-200 hover:text-[#D4AF37]' : 'text-slate-600 hover:text-[#D4AF37]'
+              }`}
               onClick={onClose}
             >
               {item.label}

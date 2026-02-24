@@ -4,6 +4,7 @@ import { NAV_ITEMS } from '../constants';
 import Logo from './Logo';
 import MobileMenu from './MobileMenu';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import AuthModal from './AuthModal';
 
 const Navbar: React.FC = () => {
@@ -11,6 +12,7 @@ const Navbar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const { user, profile, role, signOut, isAuthEnabled } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -23,7 +25,9 @@ const Navbar: React.FC = () => {
       <header
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ${
           isScrolled 
-            ? 'bg-[#050a14]/80 backdrop-blur-xl py-4 border-b border-white/5' 
+            ? theme === 'dark' 
+              ? 'bg-[#050a14]/80 backdrop-blur-xl py-4 border-b border-white/5' 
+              : 'bg-white/80 backdrop-blur-xl py-4 border-b border-slate-200'
             : 'bg-transparent py-8'
         }`}
       >
@@ -49,15 +53,39 @@ const Navbar: React.FC = () => {
           </nav>
 
           <div className="hidden lg:flex items-center gap-8">
+            <button 
+              onClick={toggleTheme}
+              className={`p-2 rounded-full transition-all duration-300 ${
+                theme === 'dark' 
+                  ? 'bg-white/5 text-[#D4AF37] hover:bg-white/10' 
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              }`}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            >
+              {theme === 'dark' ? (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 9h-1m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707M12 5a7 7 0 100 14 7 7 0 000-14z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                </svg>
+              )}
+            </button>
+
             {user ? (
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <p className="text-[9px] text-white font-bold uppercase tracking-widest">{user.email.split('@')[0]}</p>
+                  <p className={`text-[9px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>{user.email.split('@')[0]}</p>
                   <p className="text-[7px] text-[#D4AF37] uppercase tracking-widest">{role}</p>
                 </div>
                 <button 
                   onClick={() => signOut()}
-                  className="px-6 py-2 border border-white/10 text-white text-[9px] font-bold tracking-[0.2em] uppercase hover:bg-white/5 transition-all rounded-full"
+                  className={`px-6 py-2 border text-[9px] font-bold tracking-[0.2em] uppercase transition-all rounded-full ${
+                    theme === 'dark' 
+                      ? 'border-white/10 text-white hover:bg-white/5' 
+                      : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                  }`}
                 >
                   Sign Out
                 </button>

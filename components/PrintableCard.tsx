@@ -1,12 +1,14 @@
 
 import React from 'react';
 import { Printable } from '../types';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface PrintableCardProps {
   item: Printable;
 }
 
 const PrintableCard: React.FC<PrintableCardProps> = ({ item }) => {
+  const { theme } = useTheme();
   const handleDownload = () => {
     if (item.fileUrl) {
       const link = document.createElement('a');
@@ -26,8 +28,10 @@ const PrintableCard: React.FC<PrintableCardProps> = ({ item }) => {
   };
 
   return (
-    <div className="group relative bg-[#fdfcf0] rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col h-full border border-[#D4AF37]/10 hover:border-[#D4AF37]/40">
-      <div className="relative h-48 overflow-hidden bg-slate-100">
+    <div className={`group relative rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden flex flex-col h-full border transition-colors duration-500 ${
+      theme === 'dark' ? 'bg-[#0a101f] border-white/5 hover:border-[#D4AF37]/40' : 'bg-[#fdfcf0] border-[#D4AF37]/10 hover:border-[#D4AF37]/40'
+    }`}>
+      <div className={`relative h-48 overflow-hidden ${theme === 'dark' ? 'bg-[#050a14]' : 'bg-slate-100'}`}>
         <img 
           src={item.thumbnailUrl} 
           alt={item.title} 
@@ -50,7 +54,9 @@ const PrintableCard: React.FC<PrintableCardProps> = ({ item }) => {
       </div>
 
       <div className="p-6 flex flex-col flex-grow">
-        <h3 className="font-serif text-xl text-[#0a192f] mb-2 group-hover:text-[#D4AF37] transition-colors duration-300">
+        <h3 className={`font-serif text-xl mb-2 group-hover:text-[#D4AF37] transition-colors duration-300 ${
+          theme === 'dark' ? 'text-white' : 'text-[#0a192f]'
+        }`}>
           {item.title}
         </h3>
         <p className="text-sm text-slate-500 mb-6 flex-grow leading-relaxed">
@@ -59,7 +65,11 @@ const PrintableCard: React.FC<PrintableCardProps> = ({ item }) => {
         
         <button 
           onClick={handleDownload}
-          className="w-full flex items-center justify-center gap-2 py-3 bg-white border-2 border-[#D4AF37] text-[#D4AF37] font-bold text-xs uppercase tracking-widest rounded-xl hover:bg-[#D4AF37] hover:text-white transition-all duration-300 group/btn"
+          className={`w-full flex items-center justify-center gap-2 py-3 border-2 font-bold text-xs uppercase tracking-widest rounded-xl transition-all duration-300 group/btn ${
+            theme === 'dark' 
+              ? 'bg-transparent border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#050a14]' 
+              : 'bg-white border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-white'
+          }`}
         >
           <svg className="w-4 h-4 transition-transform group-hover/btn:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

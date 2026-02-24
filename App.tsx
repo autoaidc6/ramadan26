@@ -8,6 +8,7 @@ import PrintablesGallery from './components/PrintablesGallery';
 import AdminDashboard from './components/AdminDashboard';
 import TraditionsSection from './components/TraditionsSection';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { Reflection } from './types';
 
 const REFLECTIONS: Reflection[] = [
@@ -31,6 +32,7 @@ const REFLECTIONS: Reflection[] = [
 
 const MainContent: React.FC = () => {
   const { role } = useAuth();
+  const { theme } = useTheme();
 
   useEffect(() => {
     const observerOptions = { threshold: 0.1 };
@@ -44,7 +46,11 @@ const MainContent: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#050a14] selection:bg-[#D4AF37] selection:text-[#050a14] overflow-x-hidden text-slate-200">
+    <div className={`min-h-screen transition-colors duration-500 selection:bg-[#D4AF37] selection:text-[#050a14] overflow-x-hidden ${
+      theme === 'dark' 
+        ? 'bg-[#050a14] text-slate-200' 
+        : 'bg-slate-50 text-slate-900'
+    }`}>
       <Navbar />
       
       {/* Background Floating Element */}
@@ -63,11 +69,13 @@ const MainContent: React.FC = () => {
               <span className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full animate-pulse"></span>
               <span className="text-slate-400 text-[10px] font-bold tracking-[0.3em] uppercase">NoorNest Premium Experience</span>
             </div>
-            <h1 className="font-serif text-6xl md:text-8xl font-medium text-white mb-8 leading-[1.05] tracking-tight">Elevate Your <br /><span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F1D279] to-[#D4AF37] bg-[length:200%_auto] animate-shimmer">Spirit</span></h1>
+            <h1 className={`font-serif text-6xl md:text-8xl font-medium mb-8 leading-[1.05] tracking-tight ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Elevate Your <br /><span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F1D279] to-[#D4AF37] bg-[length:200%_auto] animate-shimmer">Spirit</span></h1>
             <p className="text-slate-400 text-lg md:text-xl max-w-xl mx-auto lg:mx-0 mb-12 font-light leading-relaxed">A curated digital sanctuary for the modern believer. Experience a month of growth, reflection, and sacred traditions.</p>
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
               <a href="#tracker" className="group relative w-full sm:w-auto px-12 py-5 bg-[#D4AF37] text-[#050a14] font-bold tracking-widest rounded-full overflow-hidden transition-all duration-500 hover:shadow-luxury hover:-translate-y-1 text-center text-xs uppercase">Begin Experience</a>
-              <a href="#calendar" className="w-full sm:w-auto px-12 py-5 border border-white/10 text-white font-bold tracking-widest rounded-full hover:bg-white/5 transition-all duration-300 text-center text-xs uppercase">Daily Reflections</a>
+              <a href="#calendar" className={`w-full sm:w-auto px-12 py-5 border font-bold tracking-widest rounded-full transition-all duration-300 text-center text-xs uppercase ${
+                theme === 'dark' ? 'border-white/10 text-white hover:bg-white/5' : 'border-slate-200 text-slate-600 hover:bg-slate-100'
+              }`}>Daily Reflections</a>
             </div>
           </div>
           <div className="relative flex justify-center items-center reveal" style={{ transitionDelay: '0.2s' }}>
@@ -75,7 +83,7 @@ const MainContent: React.FC = () => {
               <div className="absolute inset-0 bg-[#D4AF37]/20 blur-[80px] rounded-full animate-glow-pulse"></div>
               <svg width="320" height="440" viewBox="0 0 280 400" fill="none" className="drop-shadow-[0_0_50px_rgba(212,175,55,0.2)]">
                 <path d="M140 20L185 65H95L140 20Z" fill="#D4AF37" />
-                <rect x="60" y="105" width="160" height="210" fill="#050a14" stroke="#D4AF37" strokeWidth="3" />
+                <rect x="60" y="105" width="160" height="210" fill={theme === 'dark' ? '#050a14' : '#f8fafc'} stroke="#D4AF37" strokeWidth="3" />
                 <circle cx="140" cy="210" r="55" fill="url(#luxuryGlow)" />
                 <defs><radialGradient id="luxuryGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(140 210) rotate(90) scale(90)"><stop stopColor="#facc15" stopOpacity="0.7" /><stop offset="1" stopColor="#D4AF37" stopOpacity="0" /></radialGradient></defs>
               </svg>
@@ -86,7 +94,7 @@ const MainContent: React.FC = () => {
 
       {/* Admin Section (Conditional) */}
       {role === 'admin' && (
-        <section id="admin" className="py-32 bg-[#050a14] border-y border-white/5 scroll-mt-20">
+        <section id="admin" className={`py-32 border-y scroll-mt-20 ${theme === 'dark' ? 'bg-[#050a14] border-white/5' : 'bg-white border-slate-100'}`}>
           <div className="container mx-auto px-6 max-w-6xl">
             <AdminDashboard />
           </div>
@@ -94,7 +102,7 @@ const MainContent: React.FC = () => {
       )}
 
       {/* Tracker Section */}
-      <section id="tracker" className="py-32 bg-white text-[#050a14] relative overflow-hidden">
+      <section id="tracker" className={`py-32 relative overflow-hidden ${theme === 'dark' ? 'bg-white text-[#050a14]' : 'bg-slate-100 text-slate-900'}`}>
         <div className="container mx-auto px-6 reveal">
           <div className="text-center mb-16 max-w-3xl mx-auto">
              <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Discipline & Grace</span>
@@ -105,18 +113,18 @@ const MainContent: React.FC = () => {
       </section>
 
       {/* Quran Section */}
-      <section id="quran" className="py-32 bg-[#050a14] relative overflow-hidden">
+      <section id="quran" className={`py-32 relative overflow-hidden ${theme === 'dark' ? 'bg-[#050a14]' : 'bg-white'}`}>
         <div className="container mx-auto px-6 reveal">
           <div className="text-center mb-16 max-w-3xl mx-auto">
              <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Divine Revelation</span>
-             <h2 className="font-serif text-5xl md:text-6xl text-white mb-6">Quran Sanctuary</h2>
+             <h2 className={`font-serif text-5xl md:text-6xl mb-6 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Quran Sanctuary</h2>
           </div>
           <QuranTracker />
         </div>
       </section>
 
       {/* Printables Section */}
-      <section id="printables" className="py-32 bg-slate-50 text-[#050a14] relative">
+      <section id="printables" className={`py-32 relative ${theme === 'dark' ? 'bg-slate-50 text-[#050a14]' : 'bg-slate-200 text-slate-900'}`}>
         <div className="container mx-auto px-6 reveal">
           <div className="text-center mb-16 max-w-3xl mx-auto">
              <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Physical Tools</span>
@@ -127,7 +135,7 @@ const MainContent: React.FC = () => {
       </section>
 
       {/* Reflections Section */}
-      <section id="calendar" className="py-32 bg-white text-[#050a14]">
+      <section id="calendar" className={`py-32 ${theme === 'dark' ? 'bg-white text-[#050a14]' : 'bg-white text-slate-900'}`}>
         <div className="container mx-auto px-6 md:px-12 reveal">
           <div className="text-center mb-20 max-w-3xl mx-auto">
              <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Daily Wisdom</span>
@@ -150,8 +158,8 @@ const MainContent: React.FC = () => {
         <TraditionsSection />
       </section>
 
-      <footer className="py-24 bg-[#050a14] border-t border-white/5 text-center">
-        <p className="text-white font-serif text-xl mb-4 tracking-wide">NoorNest</p>
+      <footer className={`py-24 border-t text-center ${theme === 'dark' ? 'bg-[#050a14] border-white/5' : 'bg-slate-100 border-slate-200'}`}>
+        <p className={`font-serif text-xl mb-4 tracking-wide ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>NoorNest</p>
         <p className="text-slate-500 text-[10px] tracking-[0.5em] uppercase">&copy; 1445 AH • Premium Spiritual Lifestyle</p>
       </footer>
 
@@ -173,7 +181,9 @@ const MainContent: React.FC = () => {
 
 const App: React.FC = () => (
   <AuthProvider>
-    <MainContent />
+    <ThemeProvider>
+      <MainContent />
+    </ThemeProvider>
   </AuthProvider>
 );
 
