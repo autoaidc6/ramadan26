@@ -54,7 +54,9 @@ const MainContent: React.FC = () => {
       <Navbar />
       
       {/* Background Floating Element */}
-      <div className="fixed top-[15%] -right-[10%] w-[600px] h-[600px] opacity-[0.03] pointer-events-none animate-slow-spin select-none">
+      <div className={`fixed top-[15%] -right-[10%] w-[600px] h-[600px] pointer-events-none animate-slow-spin select-none transition-opacity duration-1000 ${
+        theme === 'dark' ? 'opacity-[0.03]' : 'opacity-[0.07]'
+      }`}>
         <svg viewBox="0 0 24 24" fill="#D4AF37">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
         </svg>
@@ -81,11 +83,49 @@ const MainContent: React.FC = () => {
           <div className="relative flex justify-center items-center reveal" style={{ transitionDelay: '0.2s' }}>
             <div className="relative animate-float-luxury">
               <div className="absolute inset-0 bg-[#D4AF37]/20 blur-[80px] rounded-full animate-glow-pulse"></div>
+              
+              {/* Decorative Crescent behind lantern */}
+              <div className={`absolute -right-20 top-1/2 -translate-y-1/2 w-72 h-72 transition-opacity duration-1000 ${
+                theme === 'dark' ? 'opacity-10' : 'opacity-20'
+              }`}>
+                <svg viewBox="0 0 24 24" fill="#D4AF37">
+                  <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+                </svg>
+              </div>
+
               <svg width="320" height="440" viewBox="0 0 280 400" fill="none" className="drop-shadow-[0_0_50px_rgba(212,175,55,0.2)]">
-                <path d="M140 20L185 65H95L140 20Z" fill="#D4AF37" />
-                <rect x="60" y="105" width="160" height="210" fill={theme === 'dark' ? '#050a14' : '#f8fafc'} stroke="#D4AF37" strokeWidth="3" />
-                <circle cx="140" cy="210" r="55" fill="url(#luxuryGlow)" />
-                <defs><radialGradient id="luxuryGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(140 210) rotate(90) scale(90)"><stop stopColor="#facc15" stopOpacity="0.7" /><stop offset="1" stopColor="#D4AF37" stopOpacity="0" /></radialGradient></defs>
+                {/* Top Ring */}
+                <circle cx="140" cy="30" r="12" stroke="#D4AF37" strokeWidth="3" />
+                
+                {/* Top Cap */}
+                <path d="M140 42L195 95H85L140 42Z" fill="#D4AF37" />
+                <path d="M100 95C100 75 180 75 180 95" stroke="#D4AF37" strokeWidth="2" fill="none" />
+                
+                {/* Main Body Frame */}
+                <path d="M80 95H200V310H80V95Z" stroke="#D4AF37" strokeWidth="4" fill={theme === 'dark' ? 'rgba(212, 175, 55, 0.05)' : 'rgba(212, 175, 55, 0.02)'} />
+                
+                {/* Vertical Pillars */}
+                <rect x="105" y="95" width="3" height="215" fill="#D4AF37" opacity="0.6" />
+                <rect x="172" y="95" width="3" height="215" fill="#D4AF37" opacity="0.6" />
+                
+                {/* Decorative Arches */}
+                <path d="M80 135C100 115 120 115 140 135C160 115 180 115 200 135" stroke="#D4AF37" strokeWidth="2" fill="none" opacity="0.8" />
+                <path d="M80 270C100 290 120 290 140 270C160 290 180 290 200 270" stroke="#D4AF37" strokeWidth="2" fill="none" opacity="0.8" />
+                
+                {/* Inner Light/Glow */}
+                <circle cx="140" cy="205" r="65" fill="url(#luxuryLanternGlow)" />
+                
+                {/* Base */}
+                <path d="M70 310H210L225 355H55L70 310Z" fill="#D4AF37" />
+                <rect x="85" y="355" width="110" height="12" rx="6" fill="#D4AF37" />
+
+                <defs>
+                  <radialGradient id="luxuryLanternGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(140 205) rotate(90) scale(110)">
+                    <stop stopColor="#F1D279" />
+                    <stop offset="0.5" stopColor="#D4AF37" stopOpacity="0.6" />
+                    <stop offset="1" stopColor="#D4AF37" stopOpacity="0" />
+                  </radialGradient>
+                </defs>
               </svg>
             </div>
           </div>
