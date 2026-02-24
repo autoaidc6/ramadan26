@@ -37,8 +37,16 @@ const TraditionsSection: React.FC = () => {
         .select('*')
         .order('created_at', { ascending: true });
 
-      if (error) throw error;
-      setTraditions(data || []);
+      if (error) {
+        if (error.code === 'PGRST204' || error.code === 'PGRST205') {
+          console.warn("Traditions table not found. Please create it in Supabase.");
+          setTraditions([]);
+        } else {
+          throw error;
+        }
+      } else {
+        setTraditions(data || []);
+      }
     } catch (e) {
       console.error("Error fetching traditions:", e);
     } finally {

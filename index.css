@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-arabic: "Amiri", serif;
+}
+
+:root {
+  --gold: #D4AF37;
+  --gold-light: #F1D279;
+  --navy-deep: #050a14;
+}
+
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #050a14;
+  color: #f8fafc;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050a14;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
+
+.shadow-luxury {
+  box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5), 0 0 15px -3px rgba(212, 175, 55, 0.1);
+}
+
+.shadow-gold-glow {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}

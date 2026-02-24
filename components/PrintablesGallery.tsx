@@ -44,19 +44,26 @@ const PrintablesGallery: React.FC = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      
-      const mappedData = data.map((item: any) => ({
-        id: item.id,
-        title: item.title,
-        description: item.description,
-        category: item.category,
-        isPremium: item.is_premium,
-        thumbnailUrl: item.thumbnail_url,
-        fileUrl: item.file_url
-      }));
+      if (error) {
+        if (error.code === 'PGRST204' || error.code === 'PGRST205') {
+          console.warn("Printables table not found. Please create it in Supabase.");
+          setPrintables([]);
+        } else {
+          throw error;
+        }
+      } else {
+        const mappedData = (data || []).map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          description: item.description,
+          category: item.category,
+          isPremium: item.is_premium,
+          thumbnailUrl: item.thumbnail_url,
+          fileUrl: item.file_url
+        }));
 
-      setPrintables(mappedData);
+        setPrintables(mappedData);
+      }
     } catch (e) {
       console.error("Error fetching printables:", e);
     } finally {
