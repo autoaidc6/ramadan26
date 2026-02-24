@@ -9,7 +9,17 @@ interface PrintableCardProps {
 const PrintableCard: React.FC<PrintableCardProps> = ({ item }) => {
   const handleDownload = () => {
     if (item.fileUrl) {
-      window.open(item.fileUrl, '_blank');
+      const link = document.createElement('a');
+      link.href = item.fileUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      // If it's a Supabase URL, we can try to force download
+      if (item.fileUrl.includes('supabase.co')) {
+        link.download = `${item.title.replace(/\s+/g, '_')}.pdf`;
+      }
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } else {
       alert("This resource is being prepared for download.");
     }
