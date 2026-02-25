@@ -10,6 +10,7 @@ import TraditionsSection from './components/TraditionsSection';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 import { Reflection } from './types';
+import { RAMADAN_2026 } from './constants';
 
 const REFLECTIONS: Reflection[] = [
   {
@@ -288,6 +289,17 @@ const MainContent: React.FC = () => {
   const { role } = useAuth();
   const { theme } = useTheme();
 
+  const ramadanDay = (() => {
+    const now = new Date();
+    const start = RAMADAN_2026.startDate;
+    const diffTime = now.getTime() - start.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    if (now < start) return 0;
+    return Math.min(30, diffDays);
+  })();
+
+  const progressPercent = (ramadanDay / 30) * 100;
+
   useEffect(() => {
     const observerOptions = { 
       threshold: 0.05,
@@ -307,10 +319,10 @@ const MainContent: React.FC = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 selection:bg-[#D4AF37] selection:text-[#050a14] overflow-x-hidden ${
+    <div className={`min-h-screen transition-colors duration-500 selection:bg-[#D4AF37] selection:text-[#0a1128] overflow-x-hidden pattern-islamic ${
       theme === 'dark' 
-        ? 'bg-[#050a14] text-slate-200' 
-        : 'bg-slate-50 text-slate-900'
+        ? 'bg-[#0a1128] text-[#f1f5f9]' 
+        : 'bg-[#fdfcf0] text-[#0a1128]'
     }`}>
       <Navbar />
       
@@ -395,7 +407,7 @@ const MainContent: React.FC = () => {
 
       {/* Admin Section (Conditional) */}
       {role === 'admin' && (
-        <section id="admin" className={`py-32 border-y scroll-mt-20 ${theme === 'dark' ? 'bg-[#050a14] border-white/5' : 'bg-white border-slate-100'}`}>
+        <section id="admin" className={`py-32 border-y scroll-mt-20 ${theme === 'dark' ? 'bg-[#0a1128] border-white/5' : 'bg-white border-slate-100'}`}>
           <div className="container mx-auto px-6 max-w-6xl">
             <AdminDashboard />
           </div>
@@ -403,7 +415,7 @@ const MainContent: React.FC = () => {
       )}
 
       {/* Tracker Section */}
-      <section id="tracker" className={`py-32 relative overflow-hidden ${theme === 'dark' ? 'bg-white text-[#050a14]' : 'bg-slate-100 text-slate-900'}`}>
+      <section id="tracker" className={`py-32 relative overflow-hidden ${theme === 'dark' ? 'bg-white text-[#0a1128]' : 'bg-slate-100 text-slate-900'}`}>
         <div className="container mx-auto px-6 reveal">
           <div className="text-center mb-16 max-w-3xl mx-auto">
              <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Discipline & Grace</span>
@@ -414,7 +426,7 @@ const MainContent: React.FC = () => {
       </section>
 
       {/* Quran Section */}
-      <section id="quran" className={`py-32 relative overflow-hidden ${theme === 'dark' ? 'bg-[#050a14]' : 'bg-white'}`}>
+      <section id="quran" className={`py-32 relative overflow-hidden ${theme === 'dark' ? 'bg-[#0a1128]' : 'bg-white'}`}>
         <div className="container mx-auto px-6 reveal">
           <div className="text-center mb-16 max-w-3xl mx-auto">
              <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Divine Revelation</span>
@@ -425,7 +437,7 @@ const MainContent: React.FC = () => {
       </section>
 
       {/* Printables Section */}
-      <section id="printables" className={`py-32 relative ${theme === 'dark' ? 'bg-slate-50 text-[#050a14]' : 'bg-slate-200 text-slate-900'}`}>
+      <section id="printables" className={`py-32 relative ${theme === 'dark' ? 'bg-slate-50 text-[#0a1128]' : 'bg-slate-200 text-slate-900'}`}>
         <div className="container mx-auto px-6 reveal">
           <div className="text-center mb-16 max-w-3xl mx-auto">
              <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Physical Tools</span>
@@ -436,7 +448,7 @@ const MainContent: React.FC = () => {
       </section>
 
       {/* Reflections Section */}
-      <section id="calendar" className={`py-32 scroll-mt-20 ${theme === 'dark' ? 'bg-[#050a14]' : 'bg-white'}`}>
+      <section id="calendar" className={`py-32 scroll-mt-20 ${theme === 'dark' ? 'bg-[#0a1128]' : 'bg-white'}`}>
         <div className="container mx-auto px-6 md:px-12">
           <div className="text-center mb-16 max-w-3xl mx-auto reveal">
              <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Daily Wisdom</span>
@@ -446,11 +458,11 @@ const MainContent: React.FC = () => {
 
           {/* Today's Focus - Now at the Top */}
           <div className={`mb-16 p-8 md:p-12 rounded-3xl border reveal max-w-5xl mx-auto ${
-            theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'
+            theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-white border-slate-200'
           }`}>
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-10">
               <div className="flex-1">
-                <h3 className={`font-serif text-3xl mb-8 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Today's Focus</h3>
+                <h3 className={`font-serif text-3xl mb-8 ${theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]'}`}>Today's Focus</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="flex items-start gap-4">
                     <div className="w-10 h-10 rounded-full bg-[#D4AF37]/20 flex items-center justify-center text-[#D4AF37] shrink-0">
@@ -480,9 +492,14 @@ const MainContent: React.FC = () => {
               <div className={`md:w-64 shrink-0 md:pl-10 md:border-l ${theme === 'dark' ? 'border-white/10' : 'border-slate-200'}`}>
                 <p className="text-[#D4AF37] text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Ramadan Progress</p>
                 <div className="w-full h-1.5 bg-slate-700/30 rounded-full overflow-hidden mb-3">
-                  <div className="w-1/3 h-full bg-[#D4AF37] shadow-[0_0_10px_rgba(212,175,55,0.5)]"></div>
+                  <div 
+                    className="h-full bg-[#D4AF37] shadow-[0_0_10px_rgba(212,175,55,0.5)] transition-all duration-1000"
+                    style={{ width: `${progressPercent}%` }}
+                  ></div>
                 </div>
-                <p className={`text-[10px] italic ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>Day 10 of 30 • Days of Mercy</p>
+                <p className={`text-[10px] italic ${theme === 'dark' ? 'text-slate-400' : 'text-slate-500'}`}>
+                  Day {ramadanDay} of 30 • {ramadanDay <= 10 ? 'Days of Mercy' : ramadanDay <= 20 ? 'Days of Forgiveness' : 'Days of Protection'}
+                </p>
               </div>
             </div>
           </div>
@@ -513,7 +530,7 @@ const MainContent: React.FC = () => {
         <TraditionsSection />
       </section>
 
-      <footer className={`py-24 border-t text-center ${theme === 'dark' ? 'bg-[#050a14] border-white/5' : 'bg-slate-100 border-slate-200'}`}>
+      <footer className={`py-24 border-t text-center ${theme === 'dark' ? 'bg-[#0a1128] border-white/5' : 'bg-slate-100 border-slate-200'}`}>
         <p className={`font-serif text-xl mb-4 tracking-wide ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>NoorNest</p>
         <p className="text-slate-500 text-[10px] tracking-[0.5em] uppercase">&copy; 1445 AH • Premium Spiritual Lifestyle</p>
       </footer>

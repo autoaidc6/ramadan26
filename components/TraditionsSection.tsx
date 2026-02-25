@@ -92,11 +92,11 @@ const TraditionsSection: React.FC = () => {
           <div key={item.id} className={`group relative overflow-hidden rounded-[2rem] p-10 border transition-all duration-700 hover:shadow-luxury hover:-translate-y-2 ${
             theme === 'dark' ? 'bg-[#0a101f] border-white/5 hover:border-[#D4AF37]/30' : 'bg-white border-slate-100 hover:border-[#D4AF37]/30'
           }`}>
-            <div className="mb-8 inline-block p-5 bg-[#D4AF37]/10 rounded-2xl text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-[#050a14] transition-all duration-500 transform group-hover:rotate-[10deg]">
+            <div className="mb-8 inline-block p-5 bg-[#D4AF37]/10 rounded-2xl text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-[#0a1128] transition-all duration-500 transform group-hover:rotate-[10deg]">
               <span className="text-3xl">{item.icon}</span>
             </div>
             <h3 className={`font-serif text-2xl mb-4 tracking-wide group-hover:text-[#D4AF37] transition-colors ${
-              theme === 'dark' ? 'text-white' : 'text-slate-900'
+              theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]'
             }`}>{item.title}</h3>
             <p className="text-slate-400 text-sm leading-relaxed font-light">
               {item.description}

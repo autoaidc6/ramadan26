@@ -14,3 +14,8 @@ export const COLORS = {
   gold: '#D4AF37',
   goldHover: '#facc15',
 };
+
+export const RAMADAN_2026 = {
+  startDate: new Date('2026-02-18T00:00:00'),
+  endDate: new Date('2026-03-19T23:59:59'), // Approximate 30 days
+};

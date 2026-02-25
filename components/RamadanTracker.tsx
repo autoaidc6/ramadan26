@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { DayData, HabitStatus } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
+import { RAMADAN_2026 } from '../constants';
 
 const HABITS: { key: keyof HabitStatus; label: string; icon: string }[] = [
   { key: 'fasting', label: 'Fasting', icon: '🌙' },
@@ -92,18 +93,27 @@ const RamadanTracker: React.FC = () => {
     };
   }, [data]);
 
+  const currentRamadanDay = (() => {
+    const now = new Date();
+    const start = RAMADAN_2026.startDate;
+    const diffTime = now.getTime() - start.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    if (now < start) return 0;
+    return Math.min(30, diffDays);
+  })();
+
   if (!isInitialized) return null;
 
   return (
     <div className="max-w-7xl mx-auto">
       {/* Stats Board */}
       <div className={`rounded-3xl p-10 mb-20 border shadow-luxury relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-12 transition-colors duration-500 ${
-        theme === 'dark' ? 'bg-[#050a14] border-white/5' : 'bg-white border-slate-200'
+        theme === 'dark' ? 'bg-[#0a1128] border-white/5' : 'bg-white border-slate-200'
       }`}>
         <div className="absolute top-0 right-0 w-64 h-64 bg-[#D4AF37]/5 blur-[80px] -mr-32 -mt-32"></div>
         
         <div className="relative z-10">
-          <h3 className={`font-serif text-3xl mb-2 tracking-tight ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Personal Evolution</h3>
+          <h3 className={`font-serif text-3xl mb-2 tracking-tight ${theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]'}`}>Personal Evolution</h3>
           <p className="text-slate-500 font-light">Consistency creates transformation.</p>
         </div>
 
@@ -119,7 +129,7 @@ const RamadanTracker: React.FC = () => {
              />
            </svg>
            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className={`text-3xl font-light ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>{Math.round(stats.overallProgress)}%</span>
+              <span className={`text-3xl font-light ${theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]'}`}>{Math.round(stats.overallProgress)}%</span>
               <span className="text-[8px] text-[#D4AF37] uppercase tracking-[0.2em]">Completion</span>
            </div>
         </div>
@@ -127,11 +137,11 @@ const RamadanTracker: React.FC = () => {
         <div className="grid grid-cols-2 gap-10 relative z-10">
           <div className="text-center md:text-left">
             <p className="text-[9px] text-slate-500 uppercase tracking-[0.3em] mb-1">Total Acts</p>
-            <p className={`text-4xl font-light ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>{stats.totalCompleted}</p>
+            <p className={`text-4xl font-light ${theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]'}`}>{stats.totalCompleted}</p>
           </div>
           <div className="text-center md:text-left">
             <p className="text-[9px] text-slate-500 uppercase tracking-[0.3em] mb-1">Perfect Days</p>
-            <p className={`text-4xl font-light ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>{stats.daysCompleted}</p>
+            <p className={`text-4xl font-light ${theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]'}`}>{stats.daysCompleted}</p>
           </div>
         </div>
       </div>
@@ -149,12 +159,19 @@ const RamadanTracker: React.FC = () => {
               className={`group relative border rounded-2xl p-6 transition-all duration-500 hover:shadow-luxury ${
                 theme === 'dark' ? 'bg-[#0a101f]' : 'bg-white'
               } ${
-                isDayComplete ? 'border-[#D4AF37]' : theme === 'dark' ? 'border-white/5' : 'border-slate-100'
+                dayData.day === currentRamadanDay 
+                  ? 'border-[#D4AF37] ring-1 ring-[#D4AF37]/30 shadow-gold-glow' 
+                  : isDayComplete ? 'border-[#D4AF37]' : theme === 'dark' ? 'border-white/5' : 'border-slate-100'
               }`}
             >
+              {dayData.day === currentRamadanDay && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#D4AF37] text-[#0a1128] text-[8px] font-bold uppercase tracking-widest rounded-full shadow-lg z-10">
+                  Today
+                </div>
+              )}
               <div className="flex items-center justify-between mb-8">
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.3em]">Day</span>
-                <span className={`text-3xl font-serif ${isDayComplete ? 'text-[#D4AF37]' : theme === 'dark' ? 'text-white' : 'text-[#050a14]'}`}>
+                <span className={`text-3xl font-serif ${isDayComplete ? 'text-[#D4AF37]' : theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]'}`}>
                   {dayData.day.toString().padStart(2, '0')}
                 </span>
               </div>
@@ -172,7 +189,7 @@ const RamadanTracker: React.FC = () => {
                       </span>
                       <span className={`text-[11px] font-medium tracking-wide transition-colors ${
                         dayData.habits[habit.key] 
-                          ? theme === 'dark' ? 'text-white' : 'text-[#050a14]' 
+                          ? theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]' 
                           : 'text-slate-400'
                       }`}>
                         {habit.label}

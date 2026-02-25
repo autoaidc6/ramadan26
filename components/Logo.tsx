@@ -33,7 +33,7 @@ const Logo: React.FC = () => {
       
       <div className="flex flex-col leading-none">
         <span className={`font-serif text-2xl font-medium tracking-tight group-hover:text-[#D4AF37] transition-colors duration-500 ${
-          theme === 'dark' ? 'text-white' : 'text-slate-900'
+          theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]'
         }`}>
           Ramadan
         </span>

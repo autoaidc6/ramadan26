@@ -26,18 +26,18 @@ const ReflectionCard: React.FC<ReflectionCardProps> = ({ reflection }) => {
       <div className="p-10 pt-12 flex flex-col flex-grow">
         <div className="mb-8">
           <span className="text-[9px] font-bold tracking-[0.4em] text-[#D4AF37] uppercase block mb-4">Daily Verse</span>
-          {reflection.arabicAyah && (
-            <p className={`font-arabic text-4xl text-right mb-6 leading-loose dir-rtl ${
-              theme === 'dark' ? 'text-[#D4AF37]' : 'text-[#050a14]'
-            }`} dir="rtl">
-              {reflection.arabicAyah}
-            </p>
-          )}
-          <h3 className={`font-serif text-2xl italic leading-relaxed tracking-tight ${
-            theme === 'dark' ? 'text-white' : 'text-[#050a14]'
-          }`}>
-            "{reflection.ayah}"
-          </h3>
+      {reflection.arabicAyah && (
+        <p className={`font-arabic text-4xl text-right mb-6 leading-loose dir-rtl ${
+          theme === 'dark' ? 'text-[#D4AF37]' : 'text-[#0a1128]'
+        }`} dir="rtl">
+          {reflection.arabicAyah}
+        </p>
+      )}
+      <h3 className={`font-serif text-2xl italic leading-relaxed tracking-tight ${
+        theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]'
+      }`}>
+        "{reflection.ayah}"
+      </h3>
         </div>
 
         <div className="text-slate-500 font-light leading-relaxed mb-10 flex-grow text-sm">
@@ -47,11 +47,11 @@ const ReflectionCard: React.FC<ReflectionCardProps> = ({ reflection }) => {
         </div>
 
         <div className={`p-6 rounded-2xl mb-8 border transition-colors duration-500 ${
-          theme === 'dark' ? 'bg-white/5 border-white/5' : 'bg-slate-50/50 border-slate-100/50'
+          theme === 'dark' ? 'bg-white/5 border-white/5' : 'bg-white border-slate-100/50'
         }`}>
           <span className="font-bold text-[#D4AF37] block mb-3 text-[9px] uppercase tracking-[0.3em]">Contemplation</span>
           <p className={`italic text-sm font-light leading-relaxed ${
-            theme === 'dark' ? 'text-slate-300' : 'text-[#050a14]'
+            theme === 'dark' ? 'text-slate-300' : 'text-[#0a1128]'
           }`}>
             {reflection.journalQuestion}
           </p>
@@ -62,7 +62,7 @@ const ReflectionCard: React.FC<ReflectionCardProps> = ({ reflection }) => {
             <div className="max-w-[80%]">
               <span className="text-[9px] font-bold text-slate-300 uppercase tracking-widest block mb-1">Supplication</span>
               <p className={`font-medium text-xs truncate italic ${
-                theme === 'dark' ? 'text-slate-300' : 'text-[#050a14]'
+                theme === 'dark' ? 'text-slate-300' : 'text-[#0a1128]'
               }`}>
                 {reflection.dua}
               </p>

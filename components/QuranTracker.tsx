@@ -85,12 +85,12 @@ const QuranTracker: React.FC = () => {
     <div className="max-w-7xl mx-auto p-6 md:p-12">
       {/* Stats Summary */}
       <div className={`mb-12 flex flex-col md:flex-row items-center justify-between gap-8 p-8 rounded-2xl shadow-xl border transition-colors duration-500 ${
-        theme === 'dark' ? 'bg-[#0a101f] border-white/5' : 'bg-white border-[#D4AF37]/10'
+        theme === 'dark' ? 'bg-[#0a1128] border-white/5' : 'bg-white border-[#D4AF37]/10'
       }`}>
         <div className="flex-1 w-full">
           <div className="flex justify-between items-end mb-4">
             <div>
-              <h3 className={`font-serif text-3xl ${theme === 'dark' ? 'text-white' : 'text-[#0a192f]'}`}>Quran Completion</h3>
+              <h3 className={`font-serif text-3xl ${theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]'}`}>Quran Completion</h3>
               <p className="text-slate-500">Track your journey through the 30 Juz.</p>
             </div>
             <div className="text-right">
@@ -132,14 +132,14 @@ const QuranTracker: React.FC = () => {
 
             <div className="relative z-10 p-5 flex-grow flex flex-col justify-between">
               <div className="flex justify-between items-start">
-                <span className={`font-serif text-3xl font-bold ${juz.completed ? 'text-[#0a192f]' : theme === 'dark' ? 'text-white/20' : 'text-slate-300'}`}>
+                <span className={`font-serif text-3xl font-bold ${juz.completed ? 'text-[#0a1128]' : theme === 'dark' ? 'text-white/20' : 'text-slate-300'}`}>
                   {juz.number}
                 </span>
                 <button 
                   onClick={() => setSelectedJuz(juz.number)}
                   className={`p-2 rounded-full transition-colors ${
                     juz.completed 
-                      ? 'bg-white/20 hover:bg-white/40 text-[#0a192f]' 
+                      ? 'bg-white/20 hover:bg-white/40 text-[#0a1128]' 
                       : theme === 'dark' ? 'bg-white/5 hover:bg-white/10 text-[#D4AF37]' : 'bg-slate-50 hover:bg-slate-100 text-[#D4AF37]'
                   }`}
                   title="View Notes"
@@ -155,14 +155,14 @@ const QuranTracker: React.FC = () => {
                   onClick={() => toggleJuz(juz.number)}
                   className={`w-full py-2 rounded-xl text-[10px] font-bold tracking-widest uppercase transition-all ${
                     juz.completed 
-                      ? 'bg-[#0a192f] text-[#D4AF37]' 
+                      ? 'bg-[#0a1128] text-[#D4AF37]' 
                       : 'bg-[#D4AF37] text-white hover:bg-[#facc15]'
                   }`}
                 >
                   {juz.completed ? 'Completed' : 'Mark Done'}
                 </button>
                 {juz.notes && (
-                   <div className={`text-[8px] truncate italic ${juz.completed ? 'text-[#0a192f]/60' : 'text-slate-400'}`}>
+                   <div className={`text-[8px] truncate italic ${juz.completed ? 'text-[#0a1128]/60' : 'text-slate-400'}`}>
                      Reflected: {juz.notes}
                    </div>
                 )}

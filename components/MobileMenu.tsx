@@ -23,7 +23,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, items, onClose }) => {
       
       {/* Menu Content */}
       <nav className={`fixed top-0 right-0 bottom-0 w-72 border-l p-8 flex flex-col gap-8 shadow-2xl animate-in slide-in-from-right duration-300 ${
-        theme === 'dark' ? 'bg-[#0a192f] border-[#D4AF37]/20' : 'bg-white border-slate-200'
+        theme === 'dark' ? 'bg-[#0a1128] border-[#D4AF37]/20' : 'bg-white border-slate-200'
       }`}>
         <div className="flex justify-end">
           <button 

@@ -11,14 +11,33 @@ const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
   const { user, profile, role, signOut, isAuthEnabled } = useAuth();
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearInterval(timer);
+    };
   }, []);
+
+  const formattedDate = currentTime.toLocaleDateString('en-US', { 
+    weekday: 'short', 
+    month: 'short', 
+    day: 'numeric' 
+  });
+  
+  const formattedTime = currentTime.toLocaleTimeString('en-US', { 
+    hour: '2-digit', 
+    minute: '2-digit',
+    hour12: true 
+  });
 
   return (
     <>
@@ -26,13 +45,19 @@ const Navbar: React.FC = () => {
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-700 ${
           isScrolled 
             ? theme === 'dark' 
-              ? 'bg-[#050a14]/80 backdrop-blur-xl py-4 border-b border-white/5' 
+              ? 'bg-[#0a1128]/80 backdrop-blur-xl py-4 border-b border-white/5' 
               : 'bg-white/80 backdrop-blur-xl py-4 border-b border-slate-200'
             : 'bg-transparent py-8'
         }`}
       >
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
-          <Logo />
+          <div className="flex items-center gap-8">
+            <Logo />
+            <div className={`hidden xl:flex flex-col border-l pl-8 ${theme === 'dark' ? 'border-white/10' : 'border-slate-200'}`}>
+              <span className={`text-[10px] font-bold tracking-[0.2em] uppercase ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>{formattedDate}</span>
+              <span className="text-[8px] text-[#D4AF37] uppercase tracking-[0.3em] font-medium mt-1">{formattedTime}</span>
+            </div>
+          </div>
 
           <nav className="hidden lg:flex items-center gap-10">
             {NAV_ITEMS.map((item) => (
@@ -76,7 +101,7 @@ const Navbar: React.FC = () => {
             {user ? (
               <div className="flex items-center gap-4">
                 <div className="text-right">
-                  <p className={`text-[9px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>{user.email.split('@')[0]}</p>
+                  <p className={`text-[9px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]'}`}>{user.email.split('@')[0]}</p>
                   <p className="text-[7px] text-[#D4AF37] uppercase tracking-widest">{role}</p>
                 </div>
                 <button 
@@ -93,7 +118,7 @@ const Navbar: React.FC = () => {
             ) : isAuthEnabled ? (
               <button 
                 onClick={() => setIsAuthModalOpen(true)}
-                className="px-8 py-3 bg-[#D4AF37] text-[#050a14] text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-white transition-all duration-500 rounded-full shadow-luxury"
+                className="px-8 py-3 bg-[#D4AF37] text-[#0a1128] text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-white transition-all duration-500 rounded-full shadow-luxury"
               >
                 Sign In
               </button>
