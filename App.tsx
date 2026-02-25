@@ -289,10 +289,17 @@ const MainContent: React.FC = () => {
   const { theme } = useTheme();
 
   useEffect(() => {
-    const observerOptions = { threshold: 0.1 };
+    const observerOptions = { 
+      threshold: 0.05,
+      rootMargin: '0px 0px -50px 0px'
+    };
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('active');
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          // Once active, we can stop observing this element
+          observer.unobserve(entry.target);
+        }
       });
     }, observerOptions);
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
@@ -429,18 +436,71 @@ const MainContent: React.FC = () => {
       </section>
 
       {/* Reflections Section */}
-      <section id="calendar" className={`py-32 ${theme === 'dark' ? 'bg-white text-[#050a14]' : 'bg-white text-slate-900'}`}>
-        <div className="container mx-auto px-6 md:px-12 reveal">
-          <div className="text-center mb-20 max-w-3xl mx-auto">
+      <section id="calendar" className={`py-32 scroll-mt-20 ${theme === 'dark' ? 'bg-[#050a14]' : 'bg-white'}`}>
+        <div className="container mx-auto px-6 md:px-12">
+          <div className="text-center mb-20 max-w-3xl mx-auto reveal">
              <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Daily Wisdom</span>
-             <h2 className="font-serif text-5xl md:text-6xl mb-6">Meditations</h2>
+             <h2 className={`font-serif text-5xl md:text-6xl mb-6 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Meditations</h2>
+             <p className="text-slate-500 font-light">A journey through the 30 days of Ramadan, offering a moment of peace and contemplation for every soul.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {REFLECTIONS.map((reflection, idx) => (
-              <div key={reflection.id} className="reveal" style={{ transitionDelay: `${idx * 0.1}s` }}>
-                <ReflectionCard reflection={reflection} />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+            <div className="lg:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {REFLECTIONS.slice(0, 6).map((reflection, idx) => (
+                  <div key={reflection.id} className="reveal h-full" style={{ transitionDelay: `${idx * 0.1}s` }}>
+                    <ReflectionCard reflection={reflection} />
+                  </div>
+                ))}
               </div>
-            ))}
+              <div className="mt-12 text-center reveal">
+                <button className={`px-10 py-4 border rounded-full text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-500 ${
+                  theme === 'dark' ? 'border-white/10 text-white hover:bg-white/5' : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                }`}>
+                  Explore Full 30-Day Journey
+                </button>
+              </div>
+            </div>
+            
+            <div className="lg:col-span-1">
+              <div className={`sticky top-32 p-10 rounded-3xl border reveal ${
+                theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-slate-50 border-slate-200'
+              }`}>
+                <h3 className={`font-serif text-2xl mb-6 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Today's Focus</h3>
+                <div className="space-y-6">
+                  <div className="flex items-start gap-4">
+                    <div className="w-8 h-8 rounded-full bg-[#D4AF37]/20 flex items-center justify-center text-[#D4AF37] shrink-0">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className={`text-xs font-bold uppercase tracking-wider mb-1 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>Best Time for Dua</p>
+                      <p className="text-slate-500 text-sm font-light">The last third of the night and just before Iftar are the most sacred moments for your heart's requests.</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-8 h-8 rounded-full bg-[#D4AF37]/20 flex items-center justify-center text-[#D4AF37] shrink-0">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className={`text-xs font-bold uppercase tracking-wider mb-1 ${theme === 'dark' ? 'text-slate-300' : 'text-slate-700'}`}>Daily Act of Kindness</p>
+                      <p className="text-slate-500 text-sm font-light">Share a meal, offer a smile, or help a neighbor. Small deeds carry immense weight this month.</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-10 pt-10 border-t border-white/10">
+                  <p className="text-[#D4AF37] text-[10px] font-bold tracking-[0.2em] uppercase mb-4">Ramadan Progress</p>
+                  <div className="w-full h-1 bg-slate-700 rounded-full overflow-hidden">
+                    <div className="w-1/3 h-full bg-[#D4AF37]"></div>
+                  </div>
+                  <p className="text-slate-500 text-[10px] mt-2 italic">Day 10 of 30 • Days of Mercy</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
