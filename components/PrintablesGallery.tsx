@@ -8,6 +8,36 @@ import { useTheme } from '../contexts/ThemeContext';
 
 const CATEGORIES: PrintableCategory[] = ['All', 'Planners', 'Kids', 'Trackers', 'Family'];
 
+const DEFAULT_PRINTABLES: Printable[] = [
+  {
+    id: 'p-1',
+    title: '30-Day Spiritual Planner',
+    description: 'A comprehensive guide to track your prayers, Quran reading, and daily goals.',
+    category: 'Planners',
+    isPremium: false,
+    thumbnailUrl: 'https://picsum.photos/seed/planner/400/600',
+    fileUrl: '#'
+  },
+  {
+    id: 'p-2',
+    title: 'Ramadan Activity Book for Kids',
+    description: 'Engaging puzzles and stories to teach children about the values of fasting.',
+    category: 'Kids',
+    isPremium: true,
+    thumbnailUrl: 'https://picsum.photos/seed/kids/400/600',
+    fileUrl: '#'
+  },
+  {
+    id: 'p-3',
+    title: 'Daily Gratitude Tracker',
+    description: 'Focus on the blessings of each day with this elegant gratitude journal page.',
+    category: 'Trackers',
+    isPremium: false,
+    thumbnailUrl: 'https://picsum.photos/seed/tracker/400/600',
+    fileUrl: '#'
+  }
+];
+
 const PrintablesGallery: React.FC = () => {
   const [activeTab, setActiveTab] = useState<PrintableCategory>('All');
   const [printables, setPrintables] = useState<Printable[]>([]);
@@ -17,6 +47,7 @@ const PrintablesGallery: React.FC = () => {
 
   useEffect(() => {
     if (!supabase) {
+      setPrintables(DEFAULT_PRINTABLES);
       setLoading(false);
       return;
     }
@@ -46,26 +77,31 @@ const PrintablesGallery: React.FC = () => {
 
       if (error) {
         if (error.code === 'PGRST204' || error.code === 'PGRST205') {
-          console.warn("Printables table not found. Please create it in Supabase.");
-          setPrintables([]);
+          console.warn("Printables table not found. Using defaults.");
+          setPrintables(DEFAULT_PRINTABLES);
         } else {
           throw error;
         }
       } else {
-        const mappedData = (data || []).map((item: any) => ({
-          id: item.id,
-          title: item.title,
-          description: item.description,
-          category: item.category,
-          isPremium: item.is_premium,
-          thumbnailUrl: item.thumbnail_url,
-          fileUrl: item.file_url
-        }));
-
-        setPrintables(mappedData);
+        const result = data || [];
+        if (result.length === 0) {
+          setPrintables(DEFAULT_PRINTABLES);
+        } else {
+          const mappedData = result.map((item: any) => ({
+            id: item.id,
+            title: item.title,
+            description: item.description,
+            category: item.category,
+            isPremium: item.is_premium,
+            thumbnailUrl: item.thumbnail_url,
+            fileUrl: item.file_url
+          }));
+          setPrintables(mappedData);
+        }
       }
     } catch (e) {
       console.error("Error fetching printables:", e);
+      setPrintables(DEFAULT_PRINTABLES);
     } finally {
       setLoading(false);
     }

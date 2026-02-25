@@ -5,6 +5,27 @@ import { Tradition } from '../types';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 
+const DEFAULT_TRADITIONS: Tradition[] = [
+  {
+    id: 'def-1',
+    title: 'The Pre-Dawn Meal',
+    description: 'Suhoor is more than sustenance; it is a blessed time of quietude and preparation for the day\'s spiritual journey.',
+    icon: '🌙'
+  },
+  {
+    id: 'def-2',
+    title: 'The Breaking of Fast',
+    description: 'Iftar is a moment of profound gratitude, often shared with family and community, celebrating the gift of sustenance.',
+    icon: '🕌'
+  },
+  {
+    id: 'def-3',
+    title: 'Nightly Vigils',
+    description: 'Taraweeh prayers offer a rhythmic connection to the Divine, as the Quran is recited in the stillness of the night.',
+    icon: '✨'
+  }
+];
+
 const TraditionsSection: React.FC = () => {
   const [traditions, setTraditions] = useState<Tradition[]>([]);
   const [loading, setLoading] = useState(true);
@@ -13,6 +34,7 @@ const TraditionsSection: React.FC = () => {
 
   useEffect(() => {
     if (!supabase) {
+      setTraditions(DEFAULT_TRADITIONS);
       setLoading(false);
       return;
     }
@@ -39,16 +61,18 @@ const TraditionsSection: React.FC = () => {
 
       if (error) {
         if (error.code === 'PGRST204' || error.code === 'PGRST205') {
-          console.warn("Traditions table not found. Please create it in Supabase.");
-          setTraditions([]);
+          console.warn("Traditions table not found. Using defaults.");
+          setTraditions(DEFAULT_TRADITIONS);
         } else {
           throw error;
         }
       } else {
-        setTraditions(data || []);
+        const result = data || [];
+        setTraditions(result.length > 0 ? result : DEFAULT_TRADITIONS);
       }
     } catch (e) {
       console.error("Error fetching traditions:", e);
+      setTraditions(DEFAULT_TRADITIONS);
     } finally {
       setLoading(false);
     }
