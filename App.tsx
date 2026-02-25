@@ -288,9 +288,10 @@ const REFLECTIONS: Reflection[] = [
 const MainContent: React.FC = () => {
   const { role } = useAuth();
   const { theme } = useTheme();
+  const [currentTime, setCurrentTime] = React.useState(new Date());
 
   const ramadanDay = (() => {
-    const now = new Date();
+    const now = currentTime;
     const start = RAMADAN_2026.startDate;
     const diffTime = now.getTime() - start.getTime();
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
@@ -299,6 +300,12 @@ const MainContent: React.FC = () => {
   })();
 
   const progressPercent = (ramadanDay / 30) * 100;
+  const currentReflection = REFLECTIONS.find(r => r.day === ramadanDay) || REFLECTIONS[0];
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     const observerOptions = { 
@@ -340,12 +347,23 @@ const MainContent: React.FC = () => {
         <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#D4AF37]/5 blur-[120px] rounded-full animate-pulse-slow"></div>
         <div className="relative z-10 container mx-auto px-6 md:px-12 grid lg:grid-cols-2 gap-20 items-center pt-20">
           <div className="text-center lg:text-left reveal">
-            <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-sm">
-              <span className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full animate-pulse"></span>
-              <span className="text-slate-400 text-[10px] font-bold tracking-[0.3em] uppercase">NoorNest Premium Experience</span>
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-10">
+              <div className="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+                <span className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full animate-pulse"></span>
+                <span className="text-slate-400 text-[10px] font-bold tracking-[0.3em] uppercase">
+                  {currentTime.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} • {currentTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}
+                </span>
+              </div>
+              <div className="inline-flex items-center px-5 py-2 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/20 backdrop-blur-sm">
+                <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.3em] uppercase">Ramadan Day {ramadanDay} of 30</span>
+              </div>
             </div>
-            <h1 className={`font-serif text-6xl md:text-8xl font-medium mb-8 leading-[1.05] tracking-tight ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Elevate Your <br /><span className="italic text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F1D279] to-[#D4AF37] bg-[length:200%_auto] animate-shimmer">Spirit</span></h1>
-            <p className="text-slate-400 text-lg md:text-xl max-w-xl mx-auto lg:mx-0 mb-12 font-light leading-relaxed">A curated digital sanctuary for the modern believer. Experience a month of growth, reflection, and sacred traditions.</p>
+            <h1 className={`font-arabic text-4xl md:text-6xl mb-8 leading-[1.6] max-w-3xl mx-auto lg:mx-0 ${theme === 'dark' ? 'text-[#D4AF37]' : 'text-[#0a1128]'}`} dir="rtl">
+              {currentReflection.arabicAyah}
+            </h1>
+            <p className={`text-lg md:text-2xl max-w-xl mx-auto lg:mx-0 mb-12 font-serif italic leading-relaxed ${theme === 'dark' ? 'text-slate-300' : 'text-[#0a1128]'}`}>
+              "{currentReflection.ayah}"
+            </p>
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
               <a href="#tracker" className="group relative w-full sm:w-auto px-12 py-5 bg-[#D4AF37] text-[#050a14] font-bold tracking-widest rounded-full overflow-hidden transition-all duration-500 hover:shadow-luxury hover:-translate-y-1 text-center text-xs uppercase">Begin Experience</a>
               <a href="#calendar" className={`w-full sm:w-auto px-12 py-5 border font-bold tracking-widest rounded-full transition-all duration-300 text-center text-xs uppercase ${
