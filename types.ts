@@ -61,8 +61,27 @@ export interface Tradition {
 
 export type UserRole = 'admin' | 'user';
 
+export interface Badge {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  unlockedAt?: string;
+  category: 'Habits' | 'Quran' | 'Social' | 'Special';
+}
+
+export interface UserStats {
+  points: number;
+  level: number;
+  streak: number;
+  badges: Badge[];
+  totalHabitsCompleted: number;
+  totalJuzCompleted: number;
+}
+
 export interface Profile {
   id: string;
   role: UserRole;
   avatar_url?: string;
+  stats?: UserStats;
 }

@@ -3,12 +3,14 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { JuzData } from '../types';
 import NotesModal from './NotesModal';
 import { useTheme } from '../contexts/ThemeContext';
+import { useGamification } from '../contexts/GamificationContext';
 
 const QuranTracker: React.FC = () => {
   const [juzList, setJuzList] = useState<JuzData[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
   const [selectedJuz, setSelectedJuz] = useState<number | null>(null);
   const { theme } = useTheme();
+  const { addPoints, unlockBadge } = useGamification();
 
   useEffect(() => {
     const saved = localStorage.getItem('quran_tracker_v1');
@@ -42,7 +44,12 @@ const QuranTracker: React.FC = () => {
     setJuzList(prev => prev.map(j => {
       if (j.number === num) {
         const newState = !j.completed;
-        if (newState) triggerConfetti();
+        if (newState) {
+          triggerConfetti();
+          addPoints(500); // 500 points per Juz
+          const totalCompleted = prev.filter(item => item.completed).length + 1;
+          if (totalCompleted >= 5) unlockBadge('quran_seeker');
+        }
         return { ...j, completed: newState };
       }
       return j;

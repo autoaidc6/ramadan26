@@ -5,6 +5,7 @@ import Logo from './Logo';
 import MobileMenu from './MobileMenu';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { useGamification } from '../contexts/GamificationContext';
 import AuthModal from './AuthModal';
 
 const Navbar: React.FC = () => {
@@ -14,6 +15,7 @@ const Navbar: React.FC = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const { user, profile, role, signOut, isAuthEnabled } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const { stats } = useGamification();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
@@ -99,10 +101,16 @@ const Navbar: React.FC = () => {
             </button>
 
             {user ? (
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-3 px-4 py-2 bg-[#D4AF37]/10 rounded-full border border-[#D4AF37]/20">
+                  <span className="text-[10px] font-bold text-[#D4AF37]">LVL {stats.level}</span>
+                  <div className="w-12 h-1 bg-slate-700/30 rounded-full overflow-hidden">
+                    <div className="h-full bg-[#D4AF37]" style={{ width: `${(stats.points % 1000) / 10}%` }}></div>
+                  </div>
+                </div>
                 <div className="text-right">
                   <p className={`text-[9px] font-bold uppercase tracking-widest ${theme === 'dark' ? 'text-[#f1f5f9]' : 'text-[#0a1128]'}`}>{user.email.split('@')[0]}</p>
-                  <p className="text-[7px] text-[#D4AF37] uppercase tracking-widest">{role}</p>
+                  <p className="text-[7px] text-[#D4AF37] uppercase tracking-widest">{stats.points} Points</p>
                 </div>
                 <button 
                   onClick={() => signOut()}

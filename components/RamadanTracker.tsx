@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { DayData, HabitStatus } from '../types';
 import { useTheme } from '../contexts/ThemeContext';
 import { RAMADAN_2026 } from '../constants';
+import { useGamification } from '../contexts/GamificationContext';
 
 const HABITS: { key: keyof HabitStatus; label: string; icon: string }[] = [
   { key: 'fasting', label: 'Fasting', icon: '🌙' },
@@ -17,6 +18,7 @@ const RamadanTracker: React.FC = () => {
   const [data, setData] = useState<DayData[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
   const { theme } = useTheme();
+  const { addPoints, unlockBadge, updateStats } = useGamification();
 
   useEffect(() => {
     const saved = localStorage.getItem('ramadan_tracker_v1');
@@ -56,10 +58,22 @@ const RamadanTracker: React.FC = () => {
     setData((prev) =>
       prev.map((d) => {
         if (d.day === dayNum) {
-          const newHabits = { ...d.habits, [habit]: !d.habits[habit] };
+          const isChecking = !d.habits[habit];
+          const newHabits = { ...d.habits, [habit]: isChecking };
+          
+          if (isChecking) {
+            addPoints(50); // 50 points per habit
+            if (habit === 'charity') {
+              const totalCharity = prev.reduce((acc, curr) => acc + (curr.habits.charity ? 1 : 0), 0) + 1;
+              if (totalCharity >= 10) unlockBadge('charity_star');
+            }
+            if (dayNum === 1) unlockBadge('first_fast');
+          }
+
           const allCompleted = Object.values(newHabits).every(v => v === true);
           if (allCompleted && !Object.values(d.habits).every(v => v === true)) {
             triggerConfetti();
+            addPoints(200); // Bonus for perfect day
           }
           return { ...d, habits: newHabits };
         }

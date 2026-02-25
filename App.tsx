@@ -7,8 +7,10 @@ import QuranTracker from './components/QuranTracker';
 import PrintablesGallery from './components/PrintablesGallery';
 import AdminDashboard from './components/AdminDashboard';
 import TraditionsSection from './components/TraditionsSection';
+import UserProfile from './components/UserProfile';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
+import { GamificationProvider, useGamification } from './contexts/GamificationContext';
 import { Reflection } from './types';
 import { RAMADAN_2026 } from './constants';
 
@@ -366,9 +368,9 @@ const MainContent: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
               <a href="#tracker" className="group relative w-full sm:w-auto px-12 py-5 bg-[#D4AF37] text-[#050a14] font-bold tracking-widest rounded-full overflow-hidden transition-all duration-500 hover:shadow-luxury hover:-translate-y-1 text-center text-xs uppercase">Begin Experience</a>
-              <a href="#calendar" className={`w-full sm:w-auto px-12 py-5 border font-bold tracking-widest rounded-full transition-all duration-300 text-center text-xs uppercase ${
+              <a href="#profile" className={`w-full sm:w-auto px-12 py-5 border font-bold tracking-widest rounded-full transition-all duration-300 text-center text-xs uppercase ${
                 theme === 'dark' ? 'border-white/10 text-white hover:bg-white/5' : 'border-slate-200 text-slate-600 hover:bg-slate-100'
-              }`}>Daily Reflections</a>
+              }`}>My Journey</a>
             </div>
           </div>
           <div className="relative flex justify-center items-center reveal" style={{ transitionDelay: '0.2s' }}>
@@ -420,6 +422,17 @@ const MainContent: React.FC = () => {
               </svg>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Profile Section */}
+      <section id="profile" className={`py-32 scroll-mt-20 ${theme === 'dark' ? 'bg-[#0a1128]' : 'bg-white'}`}>
+        <div className="container mx-auto px-6 reveal">
+          <div className="text-center mb-16 max-w-3xl mx-auto">
+             <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Personal Progress</span>
+             <h2 className={`font-serif text-5xl md:text-6xl mb-6 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Spiritual Identity</h2>
+          </div>
+          <UserProfile />
         </div>
       </section>
 
@@ -572,7 +585,9 @@ const MainContent: React.FC = () => {
 const App: React.FC = () => (
   <AuthProvider>
     <ThemeProvider>
-      <MainContent />
+      <GamificationProvider>
+        <MainContent />
+      </GamificationProvider>
     </ThemeProvider>
   </AuthProvider>
 );

@@ -3,9 +3,9 @@ import { NavItem } from './types';
 
 export const NAV_ITEMS: NavItem[] = [
   { label: 'Home', href: '#' },
+  { label: 'Journey', href: '#profile' },
   { label: 'Tracker', href: '#tracker' },
   { label: 'Quran', href: '#quran' },
-  { label: 'Printables', href: '#printables' },
   { label: 'Reflections', href: '#calendar' },
 ];
 
