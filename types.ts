@@ -2,6 +2,7 @@
 export interface NavItem {
   label: string;
   href: string;
+  children?: NavItem[];
 }
 
 export interface NavbarProps {
@@ -68,6 +69,24 @@ export interface Badge {
   icon: string;
   unlockedAt?: string;
   category: 'Habits' | 'Quran' | 'Social' | 'Special';
+}
+
+export interface DailyDeed {
+  id: string;
+  title: string;
+  points: number;
+  icon: string;
+  isCompleted?: boolean;
+}
+
+export interface Challenge {
+  id: string;
+  title: string;
+  description: string;
+  points: number;
+  icon: string;
+  category: 'Daily' | 'Weekly' | 'Special';
+  isCompleted?: boolean;
 }
 
 export interface UserStats {

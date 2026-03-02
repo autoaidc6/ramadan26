@@ -6,6 +6,16 @@ export const NAV_ITEMS: NavItem[] = [
   { label: 'Journey', href: '#profile' },
   { label: 'Tracker', href: '#tracker' },
   { label: 'Quran', href: '#quran' },
+  { 
+    label: 'Kids', 
+    href: '#kids',
+    children: [
+      { label: 'Storytelling', href: '#kids/stories' },
+      { label: 'Challenges', href: '#kids/challenges' },
+      { label: 'Nasheeds', href: '#kids/nasheeds' },
+      { label: 'Resources', href: '#kids/printables' },
+    ]
+  },
   { label: 'Reflections', href: '#calendar' },
 ];
 

@@ -63,14 +63,42 @@ const Navbar: React.FC = () => {
 
           <nav className="hidden lg:flex items-center gap-10">
             {NAV_ITEMS.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="relative group text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-300 text-slate-400 hover:text-white"
-              >
-                {item.label}
-                <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[#D4AF37] transition-all duration-500 group-hover:w-full opacity-0 group-hover:opacity-100" />
-              </a>
+              <div key={item.label} className="relative group">
+                <a
+                  href={item.href}
+                  className="relative flex items-center gap-1 text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-300 text-slate-400 hover:text-white"
+                >
+                  {item.label}
+                  {item.children && (
+                    <svg className="w-3 h-3 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  )}
+                  <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-[#D4AF37] transition-all duration-500 group-hover:w-full opacity-0 group-hover:opacity-100" />
+                </a>
+                
+                {item.children && (
+                  <div className={`absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-2`}>
+                    <div className={`w-48 rounded-2xl border p-2 shadow-2xl ${
+                      theme === 'dark' ? 'bg-[#0a1128] border-white/10' : 'bg-white border-slate-200'
+                    }`}>
+                      {item.children.map((child) => (
+                        <a
+                          key={child.label}
+                          href={child.href}
+                          className={`block px-4 py-3 rounded-xl text-[9px] font-bold tracking-widest uppercase transition-all ${
+                            theme === 'dark' 
+                              ? 'text-slate-400 hover:text-white hover:bg-white/5' 
+                              : 'text-slate-500 hover:text-[#0a1128] hover:bg-slate-50'
+                          }`}
+                        >
+                          {child.label}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
             ))}
             {role === 'admin' && (
               <a href="#admin" className="text-[10px] font-bold tracking-[0.3em] uppercase text-[#D4AF37] hover:text-white transition-all">

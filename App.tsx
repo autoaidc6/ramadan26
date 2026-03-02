@@ -1,12 +1,16 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
 import ReflectionCard from './components/ReflectionCard';
 import RamadanTracker from './components/RamadanTracker';
 import QuranTracker from './components/QuranTracker';
 import PrintablesGallery from './components/PrintablesGallery';
 import AdminDashboard from './components/AdminDashboard';
-import TraditionsSection from './components/TraditionsSection';
+import StorytellingSection from './components/StorytellingSection';
+import ChallengesSection from './components/ChallengesSection';
+import NasheedsSection from './components/NasheedsSection';
+import DailyDeeds from './components/DailyDeeds';
+import TriviaSection from './components/TriviaSection';
 import UserProfile from './components/UserProfile';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
@@ -291,6 +295,8 @@ const MainContent: React.FC = () => {
   const { role } = useAuth();
   const { theme } = useTheme();
   const [currentTime, setCurrentTime] = React.useState(new Date());
+  const [showAllReflections, setShowAllReflections] = React.useState(false);
+  const [activeKidsTab, setActiveKidsTab] = React.useState<'stories' | 'challenges' | 'nasheeds' | 'printables' | 'deeds' | 'trivia' | null>(null);
 
   const ramadanDay = (() => {
     const now = currentTime;
@@ -310,6 +316,31 @@ const MainContent: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      
+      if (hash.startsWith('#kids')) {
+        const section = document.getElementById('kids');
+        if (section) section.scrollIntoView({ behavior: 'smooth' });
+        
+        if (hash === '#kids/stories') setActiveKidsTab('stories');
+        else if (hash === '#kids/challenges') setActiveKidsTab('challenges');
+        else if (hash === '#kids/nasheeds') setActiveKidsTab('nasheeds');
+        else if (hash === '#kids/printables') setActiveKidsTab('printables');
+        else if (hash === '#kids/deeds') setActiveKidsTab('deeds');
+        else if (hash === '#kids/trivia') setActiveKidsTab('trivia');
+        else setActiveKidsTab(null);
+      } else {
+        setActiveKidsTab(null);
+      }
+    };
+
+    window.addEventListener('hashchange', handleHashChange);
+    handleHashChange();
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  useEffect(() => {
     const observerOptions = { 
       threshold: 0.05,
       rootMargin: '0px 0px -50px 0px'
@@ -323,9 +354,17 @@ const MainContent: React.FC = () => {
         }
       });
     }, observerOptions);
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+    
+    // Small timeout to ensure DOM has updated
+    const timer = setTimeout(() => {
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }, 100);
+    
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [showAllReflections, activeKidsTab]);
 
   return (
     <div className={`min-h-screen transition-colors duration-500 selection:bg-[#D4AF37] selection:text-[#0a1128] overflow-x-hidden pattern-islamic ${
@@ -467,17 +506,6 @@ const MainContent: React.FC = () => {
         </div>
       </section>
 
-      {/* Printables Section */}
-      <section id="printables" className={`py-32 relative ${theme === 'dark' ? 'bg-slate-50 text-[#0a1128]' : 'bg-slate-200 text-slate-900'}`}>
-        <div className="container mx-auto px-6 reveal">
-          <div className="text-center mb-16 max-w-3xl mx-auto">
-             <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Physical Tools</span>
-             <h2 className="font-serif text-5xl md:text-6xl mb-6">Sacred Resources</h2>
-          </div>
-          <PrintablesGallery />
-        </div>
-      </section>
-
       {/* Reflections Section */}
       <section id="calendar" className={`py-32 scroll-mt-20 ${theme === 'dark' ? 'bg-[#0a1128]' : 'bg-white'}`}>
         <div className="container mx-auto px-6 md:px-12">
@@ -537,28 +565,175 @@ const MainContent: React.FC = () => {
           
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {REFLECTIONS.slice(0, 6).map((reflection, idx) => (
-                <div key={reflection.id} className="reveal h-full" style={{ transitionDelay: `${idx * 0.1}s` }}>
+              {(showAllReflections ? REFLECTIONS : REFLECTIONS.slice(0, 6)).map((reflection, idx) => (
+                <div 
+                  key={reflection.id} 
+                  className="reveal h-full" 
+                  style={{ transitionDelay: `${(idx % 3) * 0.1}s` }}
+                >
                   <ReflectionCard reflection={reflection} />
                 </div>
               ))}
             </div>
-            <div className="mt-16 text-center reveal">
-              <button className={`px-12 py-4 border rounded-full text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-500 hover:shadow-luxury ${
-                theme === 'dark' ? 'border-white/10 text-white hover:bg-white/5' : 'border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}>
-                Explore Full 30-Day Journey
-              </button>
-            </div>
+            {!showAllReflections && (
+              <div className="mt-16 text-center reveal">
+                <button 
+                  onClick={() => setShowAllReflections(true)}
+                  className={`px-12 py-4 border rounded-full text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-500 hover:shadow-luxury ${
+                    theme === 'dark' ? 'border-white/10 text-white hover:bg-white/5' : 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                  }`}
+                >
+                  Explore Full 30-Day Journey
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Traditions Section */}
-      <section id="traditions" className="py-32 px-6 max-w-7xl mx-auto text-center relative z-10 reveal">
-        <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Sacred Legacy</span>
-        <h2 className="font-serif text-5xl md:text-6xl text-[#D4AF37] mb-20">Ancient Roots</h2>
-        <TraditionsSection />
+      {/* Kids Sanctuary Section */}
+      <section id="kids" className={`py-32 scroll-mt-20 ${theme === 'dark' ? 'bg-[#0a1128]' : 'bg-white'}`}>
+        <div className="container mx-auto px-6 reveal">
+          <div className="text-center mb-16 max-w-3xl mx-auto">
+             <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">The Next Generation</span>
+             <h2 className={`font-serif text-5xl md:text-6xl mb-6 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Kids Sanctuary</h2>
+             <p className="text-slate-500 font-light italic">A dedicated space for young souls to learn, grow, and find joy in their spiritual journey.</p>
+          </div>
+
+          {!activeKidsTab ? (
+            <div className="max-w-7xl mx-auto space-y-16">
+              {/* Featured Good Deed */}
+              <div className={`p-8 md:p-12 rounded-[40px] border relative overflow-hidden group reveal ${
+                theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-white border-slate-200'
+              }`}>
+                <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-700">
+                  <span className="text-8xl">✨</span>
+                </div>
+                <div className="relative z-10 flex flex-col md:flex-row items-center gap-12">
+                  <div className="text-center md:text-left flex-1">
+                    <span className="text-[#D4AF37] text-[10px] font-bold tracking-[0.4em] uppercase block mb-4">Good Deed of the Day</span>
+                    <h3 className={`font-serif text-4xl mb-6 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Feed a Neighbor</h3>
+                    <p className="text-slate-500 text-lg font-light leading-relaxed max-w-xl">
+                      "He is not a believer who eats his fill while his neighbor is hungry." 
+                      Today, share a small portion of your Iftar with someone living nearby.
+                    </p>
+                  </div>
+                  <div className="shrink-0">
+                    <button 
+                      onClick={() => window.location.hash = '#kids/deeds'}
+                      className="px-12 py-5 bg-[#D4AF37] text-[#0a1128] font-bold tracking-widest rounded-full text-xs uppercase hover:shadow-gold-glow transition-all"
+                    >
+                      Log This Deed +50 XP
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { id: 'stories', title: 'Storytelling', icon: '📖', desc: 'Prophetic tales & wisdom' },
+                { id: 'challenges', title: 'Challenges', icon: '🏆', desc: 'Daily spiritual growth' },
+                { id: 'deeds', title: 'Daily Deeds', icon: '✨', desc: 'Track your good deeds' },
+                { id: 'trivia', title: 'Ramadan Trivia', icon: '🧠', desc: 'Test your knowledge' },
+                { id: 'nasheeds', title: 'Nasheeds', icon: '🎵', desc: 'Melodies of faith' },
+                { id: 'printables', title: 'Resources', icon: '📄', desc: 'Trackers & activities' }
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => window.location.hash = `#kids/${item.id}`}
+                  className={`group p-8 rounded-3xl border text-left transition-all duration-500 hover:shadow-luxury hover:-translate-y-2 ${
+                    theme === 'dark' 
+                      ? 'bg-white/5 border-white/10 hover:bg-white/10' 
+                      : 'bg-white border-slate-200 hover:bg-slate-50'
+                  }`}
+                >
+                  <div className="text-4xl mb-6 group-hover:scale-110 transition-transform duration-500">{item.icon}</div>
+                  <h3 className={`font-serif text-2xl mb-2 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>{item.title}</h3>
+                  <p className="text-slate-500 text-sm font-light">{item.desc}</p>
+                  <div className="mt-8 flex items-center text-[#D4AF37] text-[10px] font-bold tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    Explore Now
+                    <svg className="w-3 h-3 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+          ) : (
+            <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both">
+              <button 
+                onClick={() => window.location.hash = '#kids'}
+                className="mb-12 flex items-center text-[#D4AF37] text-[10px] font-bold tracking-widest uppercase hover:opacity-70 transition-opacity"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Kids Sanctuary
+              </button>
+
+              {activeKidsTab === 'stories' && (
+                <div id="storytelling" className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                  <div className="text-center mb-12">
+                    <h3 className={`font-serif text-4xl mb-4 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Spiritual Storytelling</h3>
+                    <p className="text-slate-500 font-light italic">Timeless wisdom from the lives of the Prophets and the righteous.</p>
+                  </div>
+                  <StorytellingSection />
+                </div>
+              )}
+
+              {activeKidsTab === 'challenges' && (
+                <div id="challenges" className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                  <div className="text-center mb-12">
+                    <h3 className={`font-serif text-4xl mb-4 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Interactive Challenges</h3>
+                    <p className="text-slate-500 font-light italic">Small, meaningful actions to transform character and earn spiritual rewards.</p>
+                  </div>
+                  <ChallengesSection />
+                </div>
+              )}
+
+              {activeKidsTab === 'deeds' && (
+                <div id="deeds" className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                  <div className="text-center mb-12">
+                    <h3 className={`font-serif text-4xl mb-4 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Daily Good Deeds</h3>
+                    <p className="text-slate-500 font-light italic">Track your daily acts of kindness and earn XP for your spiritual journey.</p>
+                  </div>
+                  <DailyDeeds />
+                </div>
+              )}
+
+              {activeKidsTab === 'trivia' && (
+                <div id="trivia" className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                  <div className="text-center mb-12">
+                    <h3 className={`font-serif text-4xl mb-4 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Ramadan Trivia</h3>
+                    <p className="text-slate-500 font-light italic">Test your knowledge about the blessed month and learn fun facts!</p>
+                  </div>
+                  <TriviaSection />
+                </div>
+              )}
+
+              {activeKidsTab === 'nasheeds' && (
+                <div id="nasheeds" className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                  <div className="text-center mb-16">
+                    <h3 className={`font-serif text-4xl mb-4 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Sacred Nasheeds</h3>
+                    <p className="text-slate-500 font-light italic">Immerse yourself in spiritual melodies that uplift the heart and soothe the mind.</p>
+                  </div>
+                  <NasheedsSection />
+                </div>
+              )}
+
+              {activeKidsTab === 'printables' && (
+                <div id="printables" className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+                  <div className="text-center mb-12">
+                    <h3 className={`font-serif text-4xl mb-4 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>Sacred Resources</h3>
+                    <p className="text-slate-500 font-light italic">Physical tools to track prayers, Quran reading, and daily goals.</p>
+                  </div>
+                  <PrintablesGallery />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </section>
 
       <footer className={`py-24 border-t text-center ${theme === 'dark' ? 'bg-[#0a1128] border-white/5' : 'bg-slate-100 border-slate-200'}`}>
