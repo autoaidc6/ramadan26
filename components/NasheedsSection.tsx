@@ -18,7 +18,7 @@ const NASHEEDS: Nasheed[] = [
     artist: "Ahmed Alaksary",
     duration: "3:42",
     cover: "https://picsum.photos/seed/ramadan/400/400",
-    url: "https://ia800204.us.archive.org/11/items/nasheed_202005/01.mp3"
+    url: "https://ia801602.us.archive.org/11/items/IslamicNasheeds_201608/01.mp3"
   },
   {
     id: 2,
@@ -26,7 +26,7 @@ const NASHEEDS: Nasheed[] = [
     artist: "Traditional Harmony",
     duration: "4:20",
     cover: "https://picsum.photos/seed/moon/400/400",
-    url: "https://ia800204.us.archive.org/11/items/nasheed_202005/02.mp3"
+    url: "https://ia801602.us.archive.org/11/items/IslamicNasheeds_201608/02.mp3"
   },
   {
     id: 3,
@@ -34,7 +34,7 @@ const NASHEEDS: Nasheed[] = [
     artist: "Spiritual Voice",
     duration: "3:45",
     cover: "https://picsum.photos/seed/mercy/400/400",
-    url: "https://ia800204.us.archive.org/11/items/nasheed_202005/03.mp3"
+    url: "https://ia801602.us.archive.org/11/items/IslamicNasheeds_201608/03.mp3"
   },
   {
     id: 4,
@@ -42,7 +42,7 @@ const NASHEEDS: Nasheed[] = [
     artist: "Faith Ensemble",
     duration: "5:12",
     cover: "https://picsum.photos/seed/peace/400/400",
-    url: "https://ia800204.us.archive.org/11/items/nasheed_202005/04.mp3"
+    url: "https://ia801602.us.archive.org/11/items/IslamicNasheeds_201608/04.mp3"
   }
 ];
 
@@ -59,8 +59,18 @@ const NasheedsSection: React.FC = () => {
 
   const handleAudioError = (e: React.SyntheticEvent<HTMLAudioElement, Event>) => {
     const target = e.currentTarget;
+    const errorCode = target.error?.code;
+    const errorMessage = target.error?.message;
+    
+    let errorType = "Unknown error";
+    if (errorCode === 1) errorType = "Aborted";
+    else if (errorCode === 2) errorType = "Network error";
+    else if (errorCode === 3) errorType = "Decoding error";
+    else if (errorCode === 4) errorType = "Source not supported";
+
+    const errorText = `Playback failed: ${errorType} ${errorMessage ? `(${errorMessage})` : ""}`;
     console.error("Audio error:", target.error);
-    setError(`Playback failed: ${target.error?.message || 'No supported source found'}.`);
+    setError(errorText);
     setIsPlaying(false);
     setIsLoading(false);
   };
@@ -88,21 +98,35 @@ const NasheedsSection: React.FC = () => {
   useEffect(() => {
     if (audioRef.current) {
       setError(null);
+      setIsLoading(true);
+      
+      // Reset audio element
+      audioRef.current.pause();
+      audioRef.current.src = currentNasheed.url;
       audioRef.current.load();
+      
+      if (isPlaying) {
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(e => {
+            if (e.name !== 'AbortError') {
+              console.error("Playback failed on source change:", e);
+            }
+          });
+        }
+      }
     }
   }, [currentNasheed]);
 
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
-        // If we're already ready to play, play it. Otherwise onCanPlay will handle it.
         if (audioRef.current.readyState >= 2) {
           const playPromise = audioRef.current.play();
           if (playPromise !== undefined) {
             playPromise.catch(e => {
               if (e.name !== 'AbortError') {
-                console.error("Playback failed on toggle:", e.message);
-                setIsPlaying(false);
+                console.error("Playback failed on toggle:", e);
               }
             });
           }
@@ -117,13 +141,22 @@ const NasheedsSection: React.FC = () => {
     if (audioRef.current) {
       const current = audioRef.current.currentTime;
       const duration = audioRef.current.duration;
-      if (duration) {
+      if (duration && !isNaN(duration)) {
         setProgress((current / duration) * 100);
         
         const mins = Math.floor(current / 60);
         const secs = Math.floor(current % 60);
         setCurrentTime(`${mins}:${secs.toString().padStart(2, '0')}`);
       }
+    }
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const seekTo = parseFloat(e.target.value);
+    if (audioRef.current && audioRef.current.duration) {
+      const newTime = (seekTo / 100) * audioRef.current.duration;
+      audioRef.current.currentTime = newTime;
+      setProgress(seekTo);
     }
   };
 
@@ -134,6 +167,7 @@ const NasheedsSection: React.FC = () => {
       setCurrentNasheed(nasheed);
       setIsPlaying(true);
       setProgress(0);
+      setCurrentTime("0:00");
     }
   };
 
@@ -154,9 +188,12 @@ const NasheedsSection: React.FC = () => {
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
                <button 
                 onClick={() => setIsPlaying(!isPlaying)}
-                className="w-20 h-20 rounded-full bg-[#D4AF37] text-[#0a1128] flex items-center justify-center transform scale-90 group-hover:scale-100 transition-transform duration-500"
+                disabled={isLoading}
+                className={`w-20 h-20 rounded-full bg-[#D4AF37] text-[#0a1128] flex items-center justify-center transform scale-90 group-hover:scale-100 transition-transform duration-500 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                >
-                 {isPlaying ? (
+                 {isLoading ? (
+                   <div className="w-8 h-8 border-4 border-[#0a1128]/20 border-t-[#0a1128] rounded-full animate-spin"></div>
+                 ) : isPlaying ? (
                    <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                  ) : (
                    <svg className="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -166,19 +203,30 @@ const NasheedsSection: React.FC = () => {
           </div>
 
           <div className="text-center mb-8">
-            <p className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.4em] mb-2">
-              {isLoading ? 'Loading Audio...' : 'Currently Playing'}
-            </p>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              {isLoading && <div className="w-3 h-3 border-2 border-[#D4AF37]/20 border-t-[#D4AF37] rounded-full animate-spin"></div>}
+              <p className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.4em]">
+                {isLoading ? 'Buffering...' : isPlaying ? 'Now Playing' : 'Paused'}
+              </p>
+            </div>
             <h3 className={`font-serif text-3xl mb-2 ${theme === 'dark' ? 'text-white' : 'text-slate-900'}`}>{currentNasheed.title}</h3>
             <p className="text-slate-500 text-sm font-light uppercase tracking-widest">{currentNasheed.artist}</p>
           </div>
 
           <div className="space-y-4">
-            <div className="relative h-1.5 bg-slate-700/20 rounded-full overflow-hidden">
-              <div 
-                className="absolute top-0 left-0 h-full bg-[#D4AF37] shadow-gold-glow transition-all duration-300"
-                style={{ width: `${progress}%` }}
-              ></div>
+            <div className="relative group">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="0.1"
+                value={progress}
+                onChange={handleSeek}
+                className="w-full h-1.5 bg-slate-700/20 rounded-full appearance-none cursor-pointer accent-[#D4AF37] hover:h-2 transition-all"
+                style={{
+                  background: `linear-gradient(to right, #D4AF37 ${progress}%, rgba(51, 65, 85, 0.2) ${progress}%)`
+                }}
+              />
             </div>
             <div className="flex justify-between text-[10px] font-mono text-slate-500">
               <span>{currentTime}</span>
@@ -187,8 +235,20 @@ const NasheedsSection: React.FC = () => {
           </div>
 
           {error && (
-            <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs text-center animate-pulse">
-              {error}
+            <div className="mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs text-center">
+              <p className="mb-2">{error}</p>
+              <button 
+                onClick={() => {
+                  setError(null);
+                  if (audioRef.current) {
+                    audioRef.current.load();
+                    setIsPlaying(true);
+                  }
+                }}
+                className="px-4 py-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+              >
+                Retry
+              </button>
             </div>
           )}
 
@@ -200,9 +260,7 @@ const NasheedsSection: React.FC = () => {
             onLoadStart={handleLoadStart}
             onCanPlay={handleCanPlay}
             preload="auto"
-          >
-            <source src={currentNasheed.url} type="audio/mpeg" />
-          </audio>
+          />
         </div>
       </div>
 
